@@ -10,6 +10,7 @@ exports.makeJSON = function(res) {
       console.log('No data found.');
     } else {
       var i = rows.length - 1;
+      console.log(rows[i]);
       while (!(rows[i][3].includes('br') || rows[i][3].includes('bt'))) i--;
 
       //console.log('Time, Type:');
