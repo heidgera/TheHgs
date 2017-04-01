@@ -48,6 +48,7 @@ router.get('/sort', function(req, res) {
 
 app.use(subdomain('babylog', router));
 app.use(subdomain('babylog.l', router));
+app.use(subdomain('l', express.static(dirname)));
 app.use(express.static(dirname));
 
 /*wss.on('connection', function connection(ws) {
