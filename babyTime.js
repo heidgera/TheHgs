@@ -35,6 +35,7 @@ exports.handlePostData = function(req, res) {
   cells = data[0];
 
   var range = 'Sheet1!A2:G';
+  var ret = {};
 
   if (obj.newFeedBegin || obj.newFeedEnd || obj.newDiaper) {
     sheets.getData(sheetID, range, function(response) {
@@ -46,6 +47,7 @@ exports.handlePostData = function(req, res) {
         cells[0] = time.toLocaleDateString();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.feedType;
+        ret.newFeed = true;
       } else if (obj.newFeedEnd) {
         var time = new Date(obj.newFeedEnd);
 
@@ -58,11 +60,15 @@ exports.handlePostData = function(req, res) {
         cells[2] = time.toLocaleTimeString();
         var tm = new Date(cells[0] + ' ' + cells[1]);
         cells[4] = ((time.getTime() - tm.getTime()) / 60000).toFixed(0);
+
+        ret.feedEnd = true;
       } else if (obj.newDiaper) {
         var time = new Date(obj.newDiaper);
         cells[0] = time.toLocaleDateString();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.diaperType;
+
+        ret.diaper = true;
       }
 
       newRange += '!A' + (rowNum + 2);
@@ -70,8 +76,7 @@ exports.handlePostData = function(req, res) {
 
       sheets.putData(sheetID, newRange, data, function(resp) {
         console.log(resp);
-        res.send('refresh');
-        res.end('yes');
+        res.json(ret);
       });
     });
   }

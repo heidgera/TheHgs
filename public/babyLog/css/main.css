@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background-color: black;
+  background-color:#777;
   font-family: "Lucida Console", Monaco, monospace;
   color: #aaa;/*color: #080;*/
 
@@ -20,35 +20,48 @@ body {
 }
 
 .topBanner {
-  /*position: fixed;*/
+  position: fixed;
   text-align: center;
   width:100%;
-  min-height: 20%;
+  height: 20%;
   background: rgba(0, 64, 128, 1);
   color: #fff;
   left: 0;
   top: 0;
   padding: 5px;
+  font-size: 30pt;
+}
+
+.topBanner h1{
+  font-size: 50pt;
+}
+
+.buttonZone {
+  position: fixed;
+  height: 80%;
+  top:22%;
+  width: 100%;
 }
 
 .buttons {
   color: #fff;
   display: inline-block;
   width: 80%;
-  max-width: 400px;
-  padding: 20px;
+  padding: 30px;
   border: 2px solid #fff;
   border-radius: 5px;
-  margin: 10px;
-  font-size: 20px;
+  margin: 20px;
+  font-size: 30pt;
 }
 
 #newFeeding {
   background-color: #070;
+  width: 35%;
 }
 
 #endFeeding {
   background-color: #700;
+  width: 35%;
 }
 
 #wet {

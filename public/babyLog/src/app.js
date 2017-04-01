@@ -6,7 +6,7 @@ function postJSON(url, obj, cb) {
   xhttp.send(JSON.stringify(obj));
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && cb) {
-      cb(xhttp.responseXML);
+      cb(JSON.parse(xhttp.response));
     }
 
     //window.location = xhttp.responseText;
@@ -20,34 +20,62 @@ include(['./config.js'], function() {
 
   µ('#newFeeding').onclick = ()=> {
     var tm = new Date();
+    µ('#newFeeding').style.opacity = .5;
     data = { newFeedBegin:tm.toString(), feedType:'br' };
     postJSON('/newEvent', data, (res)=> {
-      console.log(res);
+      if (res.newFeed) {
+        µ('#respText').textContent = 'Recorded end of feeding';
+        µ('#newFeeding').style.opacity = 1;
+        console.log(res);
+      }
     });
   };
 
   µ('#endFeeding').onclick = ()=> {
     var tm = new Date();
     data = { newFeedEnd:tm.toString() };
+    µ('#endFeeding').style.opacity = .5;
     postJSON('/newEvent', data, (res)=> {
-      console.log(res);
+      if (res.feedEnd) {
+        µ('#respText').textContent = 'Recorded end of feeding';
+        µ('#endFeeding').style.opacity = 1;
+        console.log(res);
+      }
     });
   };
 
   µ('#poops').onclick = ()=> {
-    var tm = new Date();
-    data = { newDiaper:tm.toString(), diaperType:'v+b' };
-    postJSON('/newEvent', data, (res)=> {
-      console.log(res);
-    });
+    if (!µ('#poops').clicked) {
+      var tm = new Date();
+      data = { newDiaper:tm.toString(), diaperType:'v+b' };
+      µ('#poops').style.opacity = .5;
+      µ('#poops').clicked = true;
+      postJSON('/newEvent', data, (res)=> {
+        if (res.diaper) {
+          µ('#respText').textContent = 'Recorded poops';
+          µ('#poops').clicked = false;
+          µ('#poops').style.opacity = 1;
+          console.log(res);
+        }
+      });
+    }
   };
 
   µ('#wet').onclick = ()=> {
-    var tm = new Date();
-    data = { newDiaper:tm.toString(), diaperType:'v' };
-    postJSON('/newEvent', data, (res)=> {
-      console.log(res);
-    });
+    if (!µ('#wet').clicked) {
+      var tm = new Date();
+      data = { newDiaper:tm.toString(), diaperType:'v' };
+      µ('#wet').style.opacity = .5;
+      µ('#wet').clicked = true;
+      postJSON('/newEvent', data, (res)=> {
+        if (res.diaper) {
+          µ('#respText').textContent = 'Recorded wee-wee';
+          µ('#wet').style.opacity = 1;
+          µ('#wet').clicked = false;
+          console.log(res);
+        }
+      });
+    }
   };
 
   //date.toString()
