@@ -8,7 +8,7 @@ var url = require('url');
 //var wss = new WebSocketServer({ server: server });
 var express = require('express');
 var subdomain = require('express-subdomain');
-var port = 8080;
+var port = 80;
 
 var bodyParser = require('body-parser');
 
