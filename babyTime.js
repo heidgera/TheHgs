@@ -2,9 +2,9 @@ var sheets = require('./sheets.js');
 
 var sheetID = '1BctInpVBEZDkWnSdx__bPA23yLBRnvf_i55E3dG2EK0';
 
-exports.makeJSON = (res)=> {
+exports.makeJSON = function(res) {
   var ret = {};
-  sheets.getData(sheetID, 'Sheet1!A2:E', (response)=> {
+  sheets.getData(sheetID, 'Sheet1!A2:E', function(response) {
     var rows = response.values;
     if (rows.length == 0) {
       console.log('No data found.');
@@ -23,7 +23,7 @@ exports.makeJSON = (res)=> {
   });
 };
 
-exports.handlePostData = (req, res)=> {
+exports.handlePostData = function(req, res) {
   console.log(req.body);
   var obj = req.body;
 
@@ -36,7 +36,7 @@ exports.handlePostData = (req, res)=> {
   let range = 'Sheet1!A2:G';
 
   if (obj.newFeedBegin || obj.newFeedEnd || obj.newDiaper) {
-    sheets.getData(sheetID, range, (response)=> {
+    sheets.getData(sheetID, range, function(response) {
       var rows = response.values;
       let rowNum = rows.length;
       let newRange = 'Sheet1';
@@ -67,7 +67,7 @@ exports.handlePostData = (req, res)=> {
       newRange += '!A' + (rowNum + 2);
       console.log(data);
 
-      sheets.putData(sheetID, newRange, data, (resp)=> {
+      sheets.putData(sheetID, newRange, data, function(resp) {
         console.log(resp);
         res.send('refresh');
         res.end('yes');
@@ -76,9 +76,9 @@ exports.handlePostData = (req, res)=> {
   }
 };
 
-exports.sortData = ()=> {
+exports.sortData = function() {
   var ret = {};
-  sheets.getData(sheetID, 'Sheet1!A2:G', (response)=> {
+  sheets.getData(sheetID, 'Sheet1!A2:G', function(response) {
     var rows = response.values;
     if (rows.length == 0) {
       console.log('No data found.');
