@@ -1,4 +1,5 @@
 //var sendEmail = require('./email.js').sendEmail;
+'use strict'
 
 var server = require('http').createServer();
 var url = require('url');
