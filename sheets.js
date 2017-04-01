@@ -86,7 +86,7 @@ function authorize(credentials, callback) {
   });
 }
 
-var APICall = (cb) => {
+var APICall = function(cb) {
   // Load client secrets from a local file.
   fs.readFile('client_secret.json', function processClientSecrets(err, content) {
     if (err) {
@@ -100,8 +100,8 @@ var APICall = (cb) => {
   });
 };
 
-exports.putData = (ssID, dataRange, dataArray,cb) => {
-  APICall((auth)=> {
+exports.putData = function(ssID, dataRange, dataArray, cb) {
+  APICall(function(auth) {
     var sheet = google.sheets('v4');
     sheet.spreadsheets.values.update({
       auth: auth,
@@ -111,7 +111,7 @@ exports.putData = (ssID, dataRange, dataArray,cb) => {
       resource: { range: dataRange,
           majorDimension: 'ROWS',
           values: dataArray, },
-    }, (err, resp) => {
+    }, function(err, resp)  {
 
       if (err) {
         console.log('Data Error :', err);
@@ -123,8 +123,8 @@ exports.putData = (ssID, dataRange, dataArray,cb) => {
   });
 };
 
-exports.getData = (ssID, dataRange, cb) => {
-  APICall((auth)=> {
+exports.getData = function(ssID, dataRange, cb) {
+  APICall(function(auth) {
     var sheet = google.sheets('v4');
     sheet.spreadsheets.values.get({
       auth: auth,

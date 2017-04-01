@@ -6,7 +6,7 @@ var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ server: server });
 var express = require('express');
 var subdomain = require('express-subdomain');
-var port = 3000;
+var port = 80;
 
 var bodyParser = require('body-parser');
 
