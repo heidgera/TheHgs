@@ -1,10 +1,11 @@
 //var sendEmail = require('./email.js').sendEmail;
-'use strict'
+'use strict';
 
 var server = require('http').createServer();
 var url = require('url');
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ server: server });
+
+//var WebSocketServer = require('ws').Server;
+//var wss = new WebSocketServer({ server: server });
 var express = require('express');
 var subdomain = require('express-subdomain');
 var port = 80;
@@ -48,11 +49,11 @@ router.get('/sort', function(req, res) {
 app.use(subdomain('babylog', router));
 app.use(express.static(dirname));
 
-wss.on('connection', function connection(ws) {
+/*wss.on('connection', function connection(ws) {
   var location = url.parse(ws.upgradeReq.url, true);
 
   ws.send('something');
-});
+});*/
 
 server.on('request', app);
 server.listen(port, function() { console.log('Listening on ' + server.address().port); });
