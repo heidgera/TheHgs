@@ -23,7 +23,7 @@ body {
   position: fixed;
   text-align: center;
   width:100%;
-  height: 20%;
+  min-height: 20%;
   background: rgba(0, 64, 128, 1);
   color: #fff;
   left: 0;
