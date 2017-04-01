@@ -9,7 +9,7 @@ exports.makeJSON = function(res) {
     if (rows.length == 0) {
       console.log('No data found.');
     } else {
-      let i = rows.length - 1;
+      var i = rows.length - 1;
       while (!(rows[i][3].includes('br') || rows[i][3].includes('bt'))) i--;
 
       //console.log('Time, Type:');
@@ -29,24 +29,24 @@ exports.handlePostData = function(req, res) {
 
   console.log(obj.feedType);
 
-  let data = [];
+  var data = [];
   data[0] = [];
   cells = data[0];
 
-  let range = 'Sheet1!A2:G';
+  var range = 'Sheet1!A2:G';
 
   if (obj.newFeedBegin || obj.newFeedEnd || obj.newDiaper) {
     sheets.getData(sheetID, range, function(response) {
       var rows = response.values;
-      let rowNum = rows.length;
-      let newRange = 'Sheet1';
+      var rowNum = rows.length;
+      var newRange = 'Sheet1';
       if (obj.newFeedBegin) {
-        let time = new Date(obj.newFeedBegin);
+        var time = new Date(obj.newFeedBegin);
         cells[0] = time.toLocaleDateString();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.feedType;
       } else if (obj.newFeedEnd) {
-        let time = new Date(obj.newFeedEnd);
+        var time = new Date(obj.newFeedEnd);
 
         rowNum = rows.length - 1;
         while (!(rows[rowNum][3].includes('br') || rows[rowNum][3].includes('bt'))) rowNum--;
@@ -58,7 +58,7 @@ exports.handlePostData = function(req, res) {
         var tm = new Date(cells[0] + ' ' + cells[1]);
         cells[4] = ((time.getTime() - tm.getTime()) / 60000).toFixed(0);
       } else if (obj.newDiaper) {
-        let time = new Date(obj.newDiaper);
+        var time = new Date(obj.newDiaper);
         cells[0] = time.toLocaleDateString();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.diaperType;
@@ -83,9 +83,9 @@ exports.sortData = function() {
     if (rows.length == 0) {
       console.log('No data found.');
     } else {
-      let feedings = [];
-      let changings = [];
-      for (let i = 0; i < rows.length; i++) {
+      var feedings = [];
+      var changings = [];
+      for (var i = 0; i < rows.length; i++) {
         if ((rows[i][3].includes('br') || rows[i][3].includes('bt'))) {
           feedings.push(rows[i]);
         } else {
