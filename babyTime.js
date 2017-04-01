@@ -50,7 +50,7 @@ exports.handlePostData = function(req, res) {
         var time = new Date(obj.newFeedEnd);
 
         rowNum = rows.length - 1;
-        while (!(rows[rowNum][3].includes('br') || rows[rowNum][3].includes('bt'))) rowNum--;
+        while (!(rows[rowNum][3].indexOf('br') >= 0 || rows[rowNum][3].indexOf('bt') >= 0)) rowNum--;
         console.log(rows[rowNum]);
         cells[0] = rows[rowNum][0];
         cells[1] = rows[rowNum][1];
@@ -87,7 +87,7 @@ exports.sortData = function() {
       var feedings = [];
       var changings = [];
       for (var i = 0; i < rows.length; i++) {
-        if ((rows[i][3].includes('br') || rows[i][3].includes('bt'))) {
+        if ((rows[i][3].indexOf('br') >= 0 || rows[i][3].indexOf('bt') >= 0)) {
           feedings.push(rows[i]);
         } else {
           changings.push(rows[i]);
