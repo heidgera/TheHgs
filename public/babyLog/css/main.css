@@ -1,0 +1,70 @@
+body {
+  text-align: center;
+  background-color: black;
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #aaa;/*color: #080;*/
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.overlay {
+  position: absolute;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  left: 0;
+  top: 0;
+}
+
+.topBanner {
+  /*position: fixed;*/
+  text-align: center;
+  width:100%;
+  min-height: 20%;
+  background: rgba(0, 64, 128, 1);
+  color: #fff;
+  left: 0;
+  top: 0;
+  padding: 5px;
+}
+
+.buttons {
+  color: #fff;
+  display: inline-block;
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 20px;
+}
+
+#newFeeding {
+  background-color: #070;
+}
+
+#endFeeding {
+  background-color: #700;
+}
+
+#wet {
+  background-color: #db3;
+}
+
+#poops {
+  background-color: #750;
+}
+
+#splash {
+  position: absolute;
+  width:100%;
+  height: 100%;
+  left: 0px;
+  top: -10px;
+  background: url("../img/splash.png");
+  background-size: cover;
+}

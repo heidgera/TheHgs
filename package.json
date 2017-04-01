@@ -1,0 +1,21 @@
+{
+  "name": "PhotoBoard",
+  "version": "1.0.0",
+  "description": "A minimal photo board",
+  "main": "app.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heidgera/mission4Hacker.git"
+  },
+  "author": "ajhg",
+  "license": "CC0-1.0",
+  "homepage": "https://github.com/heidgera/mission4Hacker#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-subdomain": "^1.0.5",
+    "googleapis": "^18.0.0",
+    "ws": "^2.2.2"
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "public/babyLog/src/vendor/muse"]
+	path = public/babyLog/src/vendor/muse
+	url = https://github.com/heidgera/Muse
