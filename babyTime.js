@@ -11,7 +11,7 @@ exports.makeJSON = function(res) {
     } else {
       var i = rows.length - 1;
       console.log(rows[i]);
-      while (!(rows[i][3].includes('br') || rows[i][3].includes('bt'))) i--;
+      while (!(rows[i][3].indexOf('br') >= 0 || rows[i][3].indexOf('bt') >= 0)) i--;
 
       //console.log('Time, Type:');
       var row = rows[i];
