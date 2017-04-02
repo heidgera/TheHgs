@@ -2,7 +2,7 @@ var sheets = require('./sheets.js');
 
 var sheetID = '1BctInpVBEZDkWnSdx__bPA23yLBRnvf_i55E3dG2EK0';
 
-exports.makeJSON = function(res) {
+exports.sendTimeSinceLast = function(res) {
   var ret = {};
   sheets.getData(sheetID, 'Sheet1!A2:E', function(response) {
     var rows = response.values;
@@ -44,7 +44,7 @@ exports.handlePostData = function(req, res) {
       var newRange = 'Sheet1';
       if (obj.newFeedBegin) {
         var time = new Date(obj.newFeedBegin);
-        cells[0] = time.toLocaleDateString();
+        cells[0] = (time.getMonth() + 1) + '/' + time.getDate() + '/' + time.getFullYear();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.feedType;
         ret.newFeed = true;
@@ -72,6 +72,7 @@ exports.handlePostData = function(req, res) {
       }
 
       newRange += '!A' + (rowNum + 2);
+      if (obj.notes) cells[6] = obj.notes;
       console.log(data);
 
       sheets.putData(sheetID, newRange, data, function(resp) {
@@ -80,6 +81,50 @@ exports.handlePostData = function(req, res) {
       });
     });
   }
+};
+
+exports.sendStats = function(res) {
+  var ret = {};
+  sheets.getData(sheetID, 'Sheet1!A2:E', function(response) {
+    var rows = response.values;
+    if (rows.length == 0) {
+      console.log('No data found.');
+    } else {
+      var numFeedings = 0;
+      var aveFeedLength = 0;
+      var numPoops = 0;
+      var numPees = 0;
+
+      var firstTime = null;
+      var lastTime = null;
+
+      for (var i = 0; i < rows.length; i++) {
+        if ((rows[i][3].indexOf('br') >= 0 || rows[i][3].indexOf('bt') >= 0)) {
+          if (!firstTime) firstTime = new Date(rows[i][0] + ' ' + rows[i][1]);
+          lastTime = new Date(rows[i][0] + ' ' + rows[i][1]);
+          var tm = parseInt(rows[i][4]);
+          if (isNaN(tm)) tm = 30;
+          aveFeedLength += tm;
+          numFeedings++;
+        } else if (rows[i][3].indexOf('b') >= 0) {
+          numPoops++;
+        } else numPees++;
+      }
+
+      ret.timeBetween = ((lastTime.getTime() - firstTime.getTime()) / (numFeedings * 3600000)).toFixed(2);
+      ret.aveLength = (aveFeedLength / numFeedings).toFixed(2);
+      ret.numPoops = numPoops;
+      ret.numPees = numPees;
+
+      //console.log('Time, Type:');
+      /*var row = rows[i];
+      var tm = new Date(row[0] + ' ' + row[1]);
+      var tmNow = new Date();
+      ret.timeSince = ((tmNow.getTime() - tm.getTime()) / 3600000).toFixed(1);*/
+
+      res.json(ret);
+    }
+  });
 };
 
 exports.sortData = function() {

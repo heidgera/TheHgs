@@ -3,7 +3,7 @@ body {
   background-color:#777;
   font-family: "Lucida Console", Monaco, monospace;
   color: #aaa;/*color: #080;*/
-
+  font-size: .5px;
 }
 
 ::-webkit-scrollbar {
@@ -29,11 +29,13 @@ body {
   left: 0;
   top: 0;
   padding: 5px;
-  font-size: 30pt;
+  font-size: 30em;
+  border-bottom: 5px solid #fff;
+  overflow: hidden;
 }
 
 .topBanner h1{
-  font-size: 50pt;
+  font-size: 1.6em;
 }
 
 .buttonZone {
@@ -41,27 +43,31 @@ body {
   height: 80%;
   top:22%;
   width: 100%;
+  left: 0;
+  text-align: center;
 }
 
 .buttons {
   color: #fff;
   display: inline-block;
-  width: 80%;
-  padding: 30px;
+  width: 80vw;
+  padding: 5vw;
+  margin-top: 5vw;
   border: 2px solid #fff;
   border-radius: 5px;
-  margin: 20px;
-  font-size: 30pt;
+  font-size: 30em;
+  box-sizing: border-box;
 }
 
 #newFeeding {
   background-color: #070;
-  width: 35%;
+  width: 35vw;
+  margin-right: 10vw;
 }
 
 #endFeeding {
   background-color: #700;
-  width: 35%;
+  width: 35vw;
 }
 
 #wet {
@@ -70,6 +76,20 @@ body {
 
 #poops {
   background-color: #750;
+}
+
+#notes {
+  color: #fff;
+  background-color: #777;
+  display: inline-block;
+  width: 80vw;
+  height: 20vw;
+  padding: 1vw;
+  margin-top: 5vw;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  font-size: 30em;
+  box-sizing: border-box;
 }
 
 #splash {

@@ -8,7 +8,7 @@ var url = require('url');
 //var wss = new WebSocketServer({ server: server });
 var express = require('express');
 var subdomain = require('express-subdomain');
-var port = 80;
+var port = 8080;
 
 var bodyParser = require('body-parser');
 
@@ -32,7 +32,11 @@ router.get('/', function(req, res) {
 });
 
 router.get('/babyTimes.json', function(req, res) {
-  babyTime.makeJSON(res);
+  babyTime.sendTimeSinceLast(res);
+});
+
+router.get('/babyStats.json', function(req, res) {
+  babyTime.sendStats(res);
 });
 
 router.post('/newEvent', babyTime.handlePostData);

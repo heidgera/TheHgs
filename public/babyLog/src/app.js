@@ -24,7 +24,7 @@ include(['./config.js'], function() {
     data = { newFeedBegin:tm.toString(), feedType:'br' };
     postJSON('/newEvent', data, (res)=> {
       if (res.newFeed) {
-        µ('#respText').textContent = 'Recorded end of feeding';
+        µ('#respText').textContent = 'Recorded start of feeding';
         µ('#newFeeding').style.opacity = 1;
         console.log(res);
       }
@@ -33,7 +33,7 @@ include(['./config.js'], function() {
 
   µ('#endFeeding').onclick = ()=> {
     var tm = new Date();
-    data = { newFeedEnd:tm.toString() };
+    data = { newFeedEnd:tm.toString(), notes:µ('#notes').value };
     µ('#endFeeding').style.opacity = .5;
     postJSON('/newEvent', data, (res)=> {
       if (res.feedEnd) {
@@ -47,7 +47,7 @@ include(['./config.js'], function() {
   µ('#poops').onclick = ()=> {
     if (!µ('#poops').clicked) {
       var tm = new Date();
-      data = { newDiaper:tm.toString(), diaperType:'v+b' };
+      data = { newDiaper:tm.toString(), diaperType:'v+b', notes:µ('#notes').value };
       µ('#poops').style.opacity = .5;
       µ('#poops').clicked = true;
       postJSON('/newEvent', data, (res)=> {
@@ -64,7 +64,7 @@ include(['./config.js'], function() {
   µ('#wet').onclick = ()=> {
     if (!µ('#wet').clicked) {
       var tm = new Date();
-      data = { newDiaper:tm.toString(), diaperType:'v' };
+      data = { newDiaper:tm.toString(), diaperType:'v', notes:µ('#notes').value };
       µ('#wet').style.opacity = .5;
       µ('#wet').clicked = true;
       postJSON('/newEvent', data, (res)=> {
