@@ -72,7 +72,7 @@ include(['./config.js'], function() {
           µ('#respText').textContent = 'Recorded wee-wee';
           µ('#wet').style.opacity = 1;
           µ('#wet').clicked = false;
-          
+
           console.log(res);
         }
       });

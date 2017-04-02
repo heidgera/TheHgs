@@ -64,7 +64,7 @@ exports.handlePostData = function(req, res) {
         ret.feedEnd = true;
       } else if (obj.newDiaper) {
         var time = new Date(obj.newDiaper);
-        cells[0] = time.toLocaleDateString();
+        cells[0] = (time.getMonth() + 1) + '/' + time.getDate() + '/' + time.getFullYear();
         cells[1] = time.toLocaleTimeString();
         cells[3] = obj.diaperType;
 
