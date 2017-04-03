@@ -17,7 +17,14 @@ exports.sendTimeSinceLast = function(res) {
       var row = rows[i];
       var tm = new Date(row[0] + ' ' + row[1]);
       var tmNow = new Date();
-      ret.timeSince = ((tmNow.getTime() - tm.getTime()) / 3600000).toFixed(1);
+      var time = ((tmNow.getTime() - tm.getTime()) / 3600000);
+      var units = ' hours';
+      if (time < 1) {
+        time = time * 60;
+        units = ' minutes';
+      }
+
+      ret.timeSince = time.toFixed(1) + units;
 
       res.json(ret);
     }
