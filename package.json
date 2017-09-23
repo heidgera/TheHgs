@@ -6,11 +6,11 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heidgera/mission4Hacker.git"
+    "url": "git+https://github.com/heidgera/TheHgs.git"
   },
   "author": "ajhg",
   "license": "CC0-1.0",
-  "homepage": "https://github.com/heidgera/mission4Hacker#readme",
+  "homepage": "https://github.com/heidgera/TheHgs#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
