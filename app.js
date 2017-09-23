@@ -6,13 +6,17 @@ var obtains = [
   `./server/express.js`,
   `./server/wsServer.js`,
   'child_process',
+  './homeDevices.js',
 ];
 
-obtain(obtains, ({ fileServer }, { wss }, { exec })=> {
+obtain(obtains, ({ fileServer }, { wss }, { exec }, { devices })=> {
+
   setInterval(()=> {
     exec('arp -a', (err, stdout, stderr)=> {
-      if (stdout.includes('64:bc:0c:4b:da:81')) console.log('Aaron is home');
-      else console.log('Aaron is away');
+      if (stdout.includes('64:bc:0c:4b:da:81')) {
+        console.log('Aaron is home');
+        devices.sunroomLamp.turnOn();
+      } else console.log('Aaron is away');
     });
   }, 5000);
 });

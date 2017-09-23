@@ -1,7 +1,7 @@
 {
-  "name": "PhotoBoard",
+  "name": "TheHgs",
   "version": "1.0.0",
-  "description": "A minimal photo board",
+  "description": "Server-side code for thehgs",
   "main": "app.js",
   "scripts": {},
   "repository": {
@@ -17,6 +17,8 @@
     "express-subdomain": "^1.0.5",
     "google-auth-library": "^0.10.0",
     "googleapis": "^18.0.0",
+    "mongodb": "^2.2.31",
+    "wemo-client": "^0.14.0",
     "ws": "^2.2.2"
   }
 }
