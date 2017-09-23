@@ -11,3 +11,5 @@ global.obtain = (addr, func)=> {
   };
 
 };
+
+global.provide = ()=> {};

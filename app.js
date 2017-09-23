@@ -3,8 +3,8 @@ require('./local/src/obtain.js');
 const local = './local/src/';
 
 var obtains = [
-  `${local}server/express.js`,
-  `${local}server/wsServer.js`,
+  `./server/express.js`,
+  `./server/wsServer.js`,
   'child_process',
 ];
 
