@@ -1,5 +1,7 @@
 obtain(['wemo-client'], (Wemo)=> {
-  var wemo = new Wemo();
+  var wemo = new Wemo({
+    listen_interface: 'wlan0';
+  });
 
   var Device = function (name) {
     const _this = this;
