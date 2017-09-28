@@ -39,6 +39,7 @@ obtain(['wemo-client'], (Wemo)=> {
 
   exports.devices.sunroomLamp = new Device('Sunroom');
 
+  console.log('Scanning devices...');
   wemo.discover(function (err, deviceInfo) {
     console.log('Wemo Device Found: %j', deviceInfo.friendlyName);
 
