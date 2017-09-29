@@ -1,6 +1,6 @@
 obtain(['wemo-client'], (Wemo)=> {
   var wemo = new Wemo({
-    listen_interface: 'wlan0',
+    //listen_interface: 'wlan0',
   });
 
   var Device = function (name) {
@@ -41,26 +41,28 @@ obtain(['wemo-client'], (Wemo)=> {
 
   exports.devices.sunroomLamp = new Device('Sunroom');
 
-  console.log('Scanning devices...');
-  wemo.discover(function (err, deviceInfo) {
-    console.log('Wemo Device Found: %j', deviceInfo.friendlyName);
+  setInterval(()=> {
+    console.log('Scanning devices...');
+    wemo.discover(function (err, deviceInfo) {
+      console.log('Wemo Device Found: %j', deviceInfo.friendlyName);
 
-    for (var device in exports.devices) {
-      if (exports.devices.hasOwnProperty(device)) {
-        if (exports.devices[device].name == deviceInfo.friendlyName) {
-          exports.devices[device].client = wemo.client(deviceInfo);
+      for (var device in exports.devices) {
+        if (exports.devices.hasOwnProperty(device)) {
+          if (exports.devices[device].name == deviceInfo.friendlyName) {
+            exports.devices[device].client = wemo.client(deviceInfo);
 
-          console.log(`Setting up ${deviceInfo.friendlyName}`);
+            console.log(`Setting up ${deviceInfo.friendlyName}`);
 
-          exports.devices[device].client.on('error', function (err) {
-            console.log('Error: %s', err.code);
-          });
+            exports.devices[device].client.on('error', function (err) {
+              console.log('Error: %s', err.code);
+            });
 
-          // Handle BinaryState events
-          exports.devices[device].client.on('binaryState', exports.devices[device].onChange);
+            // Handle BinaryState events
+            exports.devices[device].client.on('binaryState', exports.devices[device].onChange);
+          }
         }
       }
-    }
 
-  });
+    });
+  }, 5000);
 });
