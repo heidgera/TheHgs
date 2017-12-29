@@ -1,6 +1,8 @@
-obtain(['express', 'fs'], (express, fs)=> {
+obtain(['express', 'body-parser', 'fs'], (express, bodyParser, fs)=> {
   var fileServer = express();
   var router = express.Router();
+
+  router.use(bodyParser.json());
 
   fileServer.use('', express.static('./client'));
   fileServer.use('/common', express.static('./common'));
