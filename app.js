@@ -33,6 +33,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, { exec })=> {
   }, 5000);*/
 
   router.post('/security', function (req, res) {
+    console.log(req.body);
     var obj = req.body;
 
     console.log(obj.password);
