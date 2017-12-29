@@ -6,10 +6,9 @@ var obtains = [
   `./server/express.js`,
   `./server/wsServer.js`,
   'child_process',
-  './homeDevices.js',
 ];
 
-obtain(obtains, ({ fileServer, router }, { wss }, { exec }, { devices })=> {
+obtain(obtains, ({ fileServer, router }, { wss }, { exec })=> {
 
   //var server = PeerServer({ port: 9000, path: '/freebook' });
 
