@@ -9,13 +9,13 @@ var obtains = [
   './homeDevices.js',
 ];
 
-obtain(obtains, ({ fileServer }, { wss }, { exec }, { devices })=> {
+obtain(obtains, ({ fileServer, router }, { wss }, { exec }, { devices })=> {
 
   //var server = PeerServer({ port: 9000, path: '/freebook' });
 
-  var AaronHomeState = false;
+  //var AaronHomeState = false;
 
-  setInterval(()=> {
+  /*setInterval(()=> {
     exec('sudo hostapd_cli all_sta', (err, stdout, stderr)=> {
       if (stdout.includes('64:bc:0c:4b:da:81')) {
         if (!AaronHomeState) {
@@ -31,5 +31,15 @@ obtain(obtains, ({ fileServer }, { wss }, { exec }, { devices })=> {
         }
       }
     });
-  }, 5000);
+  }, 5000);*/
+
+  router.post('/security', function (req, res) {
+
+    console.log(obj.password);
+
+    ret = { success: true };
+
+    res.json(ret);
+  });
+
 });
