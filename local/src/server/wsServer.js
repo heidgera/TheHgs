@@ -1,6 +1,6 @@
 obtain(['ws'], ({ Server })=> {
-  if (!global.wsServer) {
-    global.wsServer = new Server({ port: 8080 });
+  if (!window.wsServer) {
+    window.wsServer = new Server({ port: 8080 });
     var webSock = null;
 
     wsServer.broadcast = function (data) {
