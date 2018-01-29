@@ -1,3 +1,5 @@
+console.log('loading obtain');
+
 global.obtain = (addr, func)=> {
   var _this = this;
   var objs = [];
