@@ -55,6 +55,6 @@ obtain(obtains, ({ fileServer, router }, { wss }, { exec })=> {
     res.json(ret);
   });
 
-  fileServer.use(router);
+  //fileServer.use(router);
 
 });
