@@ -2,6 +2,8 @@ require('./local/src/obtain.js');
 
 const local = './local/src/';
 
+console.log('launching...');
+
 var obtains = [
   `./server/express.js`,
   `./server/wsServer.js`,

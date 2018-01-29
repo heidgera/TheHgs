@@ -1,4 +1,5 @@
 obtain(['express', 'body-parser', 'fs'], (express, bodyParser, fs)=> {
+  console.log('Starting server...');
   var fileServer = express();
   var router = express.Router();
 
