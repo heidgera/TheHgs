@@ -16,10 +16,10 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, https)=> {
   fileServer.use('', express.static(`${global.tld}/client`));
   fileServer.use('/common', express.static(`${global.tld}/common`));
 
-  // const options = {
-  //   cert: fs.readFileSync('./sslcert/fullchain.pem'),
-  //   key: fs.readFileSync('./sslcert/privkey.pem'),
-  // };
+  const options = {
+    cert: fs.readFileSync('./sslcert/fullchain.pem'),
+    key: fs.readFileSync('./sslcert/privkey.pem'),
+  };
 
   fileServer.start = ()=> {
     fileServer.use(router);
@@ -27,7 +27,7 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, https)=> {
       console.log('listening on 80');
     });
 
-    //https.createServer(options, fileServer).listen(443);
+    https.createServer(options, fileServer).listen(443);
   };
 
   exports.fileServer = fileServer;
