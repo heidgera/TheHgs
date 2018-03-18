@@ -1,5 +1,7 @@
 require('./local/src/obtain.js');
 
+global.tld = __dirname;
+
 const local = './local/src/';
 
 console.log('launching...');
