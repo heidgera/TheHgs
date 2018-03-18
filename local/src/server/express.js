@@ -17,8 +17,8 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, https)=> {
   fileServer.use('/common', express.static(`${global.tld}/common`));
 
   const options = {
-    cert: fs.readFileSync('./sslcert/fullchain.pem'),
-    key: fs.readFileSync('./sslcert/privkey.pem'),
+    cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
+    key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
   };
 
   fileServer.start = ()=> {
