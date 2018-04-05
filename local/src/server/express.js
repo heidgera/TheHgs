@@ -23,6 +23,11 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, cookieParser, htt
     //   resave: false,
     // });
 
+    // const options = {
+    //   cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
+    //   key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
+    // };
+
     var fileServer = express();
     var router = express.Router();
 
