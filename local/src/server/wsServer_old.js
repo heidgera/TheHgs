@@ -1,15 +1,8 @@
 if (!window) var window = global;
 
-obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { Server }, url)=> {
+obtain(['ws'], ({ Server })=> {
   if (!window.wsServer) {
-    window.wsServer = new Server({
-      verifyClient: (info, done) => {
-        sessionParser(info.req, {}, () => {
-          done(true);
-        });
-      },
-
-      server: httpServer, });
+    window.wsServer = new Server({ port: 8080 });
     var webSock = null;
 
     wsServer.broadcast = function (data) {
@@ -30,7 +23,7 @@ obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { S
       wsServer.orderedClients[_id].send(JSON.stringify(obj));
     };
 
-    var orderedCallbacks = {};
+    var orderedCallbacks = [];
 
     wsServer.onOrderedConnect = (_id, cb)=> {
       orderedCallbacks[_id] = cb;
@@ -38,12 +31,8 @@ obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { S
 
     wsServer.onClientConnect = (ws)=> {};
 
-    wsServer.onClientDisconnect = (ws)=> {};
-
-    wsServer.on('connection', function (ws, req) {
-      //console.log('client connected');
-      if (!req && ws.upgradeReq) req = ws.upgradeReq;
-      wsServer.onClientConnect(ws, req);
+    wsServer.on('connection', function (ws) {
+      wsServer.onClientConnect(ws);
       ws.on('message', function (message) {
         //console.log(message);
         var data = JSON.parse(message);
@@ -56,13 +45,12 @@ obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { S
               if (orderedCallbacks[data._id]) orderedCallbacks[data._id]();
             } else if (key == 'timeSync') {
               ws.send(JSON.stringify({ serverTime: Date.now() }));
-            } else if (key in listeners) listeners[key](data[key], data, ws);
+            } else if (key in listeners) listeners[key](data[key], data);
           }
         }
       });
 
       ws.on('close', function () {
-        wsServer.onClientDisconnect(req);
       });
 
       ws.on('error', function (error) {
