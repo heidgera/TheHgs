@@ -1,6 +1,6 @@
 if (!window) var window = global;
 
-obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { Server }, url)=> {
+obtain(['./server/express.js', 'ws', 'url'], ({ httpsServer, sessionParser }, { Server }, url)=> {
   if (!window.wsServer) {
     window.wsServer = new Server({
       verifyClient: (info, done) => {
@@ -9,7 +9,7 @@ obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { S
         });
       },
 
-      server: httpServer, });
+      server: httpsServer, });
     var webSock = null;
 
     wsServer.broadcast = function (data) {

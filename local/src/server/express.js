@@ -23,10 +23,10 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, cookieParser, htt
     //   resave: false,
     // });
 
-    // const options = {
-    //   cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
-    //   key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
-    // };
+    const options = {
+      cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
+      key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
+    };
 
     var fileServer = express();
     var router = express.Router();
@@ -46,7 +46,7 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, cookieParser, htt
       console.log('listening on 80');
     });
 
-    //window.expressServer.httpsServer = https.createServer(options, fileServer).listen(443);
+    window.expressServer.httpsServer = https.createServer(options, fileServer).listen(443);
 
     window.expressServer.fileServer = fileServer;
     window.expressServer.router = router;
@@ -57,7 +57,7 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, cookieParser, htt
   exports.router = window.expressServer.router;
   exports.express = window.expressServer.express;
   exports.httpServer = window.expressServer.httpServer;
-  //exports.httpsServer = window.expressServer.httpsServer;
+  exports.httpsServer = window.expressServer.httpsServer;
   exports.sessionParser = window.expressServer.sessionParser;
 
 });
