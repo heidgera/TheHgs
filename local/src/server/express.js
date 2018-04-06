@@ -9,7 +9,7 @@ var obtains = [
   'https',
 ];
 
-obtain(obtains, (express, bodyParser, fs, fileUpload, session, cookieParser, https)=> {
+obtain(obtains, (express, bodyParser, fs, fileUpload, session, https)=> {
   if (!window.expressServer) {
     window.expressServer = {};
     window.expressServer.sessionParser = session({
