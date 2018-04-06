@@ -86,9 +86,9 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
     wss.send(ws.id, res);
   });
 
-  /*wss.addListener('cnxnRequest', (data, req)=> {
-    wss.send(data.toId, { cnxnRequest: data });
-  });*/
+  wss.addListener('relay', (data, req)=> {
+    wss.send(data.toId, { relay: data.data });
+  });
 
   wss.addListener('offer', (data, req, ws)=> {
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
