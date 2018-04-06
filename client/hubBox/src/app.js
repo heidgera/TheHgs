@@ -18,6 +18,10 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
       key: config.key,
     }, });
 
+    ws.addListener('setId', (id)=> {
+      ws.id = id;
+    });
+
     ws.addListener('nameRequest', (approved)=> {
       if (!approved) {
         console.log('name taken');
@@ -27,11 +31,10 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
     });
 
     ws.addListener('cnxnRequest', (req)=> {
-      if (req.auth && !channels[req.fromId]) {
+      if (req.auth && !channels[req.fromId] && req.toId == ws.id) {
         console.log('got connection request');
         var channel = new DataChannel(ws);
 
-        ws.id = req.toId;
         channel.connect(req.fromId);
 
         channel.addListener('message', (msg)=> {

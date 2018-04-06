@@ -31,10 +31,19 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
 
   wss.onClientConnect = (ws, req)=> {
     if (req) {
+      console.log('client connected');
       var id = req.session.id;
       wss.orderedClients[req.session.id] = ws;
+      console.log(id);
       ws.id = req.session.id;
-      ws.remote = req.session.remoteName;
+
+      if (req.session.remoteName) {
+        ws.remote = req.session.remoteName;
+        console.log(ws.remote);
+      }
+
+      console.log('sending id:');
+      wss.send(ws.id, { setId: ws.id });
 
       if (req.session.remoteId && !!wss.orderedClients[req.session.remoteId]) {
         wss.send(req.session.remoteId, { cnxnRequest: {
@@ -44,6 +53,8 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
         }, });
       } else if (req.session.remoteName) {
         wss.send(ws.id, { error: 'fourohfour' });
+      } else {
+        console.log('did not request connection');
       }
     }
 
