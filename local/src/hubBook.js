@@ -34,6 +34,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
       var id = req.session.id;
       wss.orderedClients[req.session.id] = ws;
       ws.id = req.session.id;
+      ws.remote = req.session.remoteName;
 
       if (req.session.remoteId && !!wss.orderedClients[req.session.remoteId]) {
         wss.send(req.session.remoteId, { cnxnRequest: {
@@ -56,7 +57,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
   };
 
   wss.addListener('connect', (data, req, ws)=> {
-    console.log('passing local description:');
+    console.log('passing local description to ' + (ws.remote ? 'box' : 'client'));
     if (wss.orderedClients[data.target]) {
       wss.send(data.target, { connect: data });
     } else {
