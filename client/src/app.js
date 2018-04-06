@@ -31,6 +31,8 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
   exports.app = {};
 
   exports.app.start = ()=> {
+
+    console.log('here');
     ws.connect();
 
     document.onkeypress = (e)=> {
