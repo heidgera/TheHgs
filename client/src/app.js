@@ -9,7 +9,7 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
   });
 
   channel.onConnect = ()=> {
-    ws.close();
+    //ws.close();
     console.log('sending test message');
     channel.send({ message: 'test message from a client' });
   };
