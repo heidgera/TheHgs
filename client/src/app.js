@@ -19,10 +19,11 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
     };
 
     ws.onConnect = ()=> {
-
+      console.log('connected to websocket');
     };
 
     ws.addListener('setId', (id)=> {
+      console.log('Set id to ' + id);
       ws.id = id;
     });
 
