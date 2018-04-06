@@ -56,6 +56,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
   };
 
   wss.addListener('connect', (data, req, ws)=> {
+    console.log('passing local description:');
     if (wss.orderedClients[data.target]) {
       wss.send(data.target, { connect: data });
     } else {
@@ -77,6 +78,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
   });*/
 
   wss.addListener('offer', (data, req, ws)=> {
+    console.log('passing connection candidate:');
     if (wss.orderedClients[data.target]) {
       wss.send(data.target, { offer: data });
     } else {
