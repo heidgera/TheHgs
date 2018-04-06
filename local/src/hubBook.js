@@ -57,7 +57,8 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
   };
 
   wss.addListener('connect', (data, req, ws)=> {
-    console.log('passing local description to ' + (ws.remote ? 'box' : 'client'));
+    console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
+    console.log(data.sdp);
     if (wss.orderedClients[data.target]) {
       wss.send(data.target, { connect: data });
     } else {
