@@ -94,6 +94,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
     console.log(data);
     if (wss.orderedClients[data.target]) {
+      console.log(data.target);
       wss.send(data.target, { offer: data });
     } else {
       wss.send(ws.id, { error: 'No such client' });
