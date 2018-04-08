@@ -39,7 +39,8 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https, http)=> {
 
     fileServer.use(router);
 
-    window.expressServer.httpServer = http.createServer(fileServer).listen(80);
+    //window.expressServer.httpServer = http.createServer(fileServer).listen(80);
+    var httpApp = fileServer;
 
     if (muse.useSSL) {
       const options = {
@@ -52,7 +53,14 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https, http)=> {
       window.expressServer.httpServer.get('*', function (req, res) {
         res.redirect('https://' + req.headers.host + req.url);
       });
+
+      httpApp = function (req, res) {
+        res.redirect('https://' + req.headers.host + req.url);
+      };
+
     } else window.expressServer.httpsServer = {};
+
+    window.expressServer.httpServer = http.createServer(httpApp).listen(80);
 
     window.expressServer.fileServer = fileServer;
     window.expressServer.router = router;
