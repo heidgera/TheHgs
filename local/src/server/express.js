@@ -7,9 +7,10 @@ var obtains = [
   'express-fileupload',
   'express-session',
   'https',
+  'http',
 ];
 
-obtain(obtains, (express, bodyParser, fs, fileUpload, session, https)=> {
+obtain(obtains, (express, bodyParser, fs, fileUpload, session, https, http)=> {
   if (!window.expressServer) {
     window.expressServer = {};
     window.expressServer.sessionParser = session({
@@ -37,9 +38,8 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https)=> {
     fileServer.use('/common', express.static('./common'));
 
     fileServer.use(router);
-    window.expressServer.httpServer = fileServer.listen(80, function () {
-      console.log('listening on 80');
-    });
+
+    window.expressServer.httpServer = http.createServer(fileServer).listen(80);
 
     if (muse.useSSL) {
       const options = {
