@@ -23,11 +23,6 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https)=> {
     //   resave: false,
     // });
 
-    const options = {
-      cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
-      key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
-    };
-
     var fileServer = express();
     var router = express.Router();
 
@@ -46,7 +41,18 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https)=> {
       console.log('listening on 80');
     });
 
-    window.expressServer.httpsServer = https.createServer(options, fileServer).listen(443);
+    if (muse.useSSL) {
+      const options = {
+        cert: fs.readFileSync(`${global.tld}/sslcert/fullchain.pem`),
+        key: fs.readFileSync(`${global.tld}/sslcert/privkey.pem`),
+      };
+
+      window.expressServer.httpsServer = https.createServer(options, fileServer).listen(443);
+
+      window.expressServer.httpServer.get('*', function (req, res) {
+        res.redirect('https://' + req.headers.host + req.url);
+      });
+    } else window.expressServer.httpsServer = {};
 
     window.expressServer.fileServer = fileServer;
     window.expressServer.router = router;

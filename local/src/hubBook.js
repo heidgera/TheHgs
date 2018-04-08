@@ -1,8 +1,8 @@
 if (!window) var window = global;
 
 var obtains = [
-  './server/express.js',
-  './server/wsServer.js',
+  `${__dirname}/server/express.js`,
+  `${__dirname}/server/wsServer.js`,
   'path',
   'request',
 ];

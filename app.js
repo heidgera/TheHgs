@@ -1,4 +1,6 @@
-require('./local/src/obtain.js');
+require('./common/src/muse/main.js');
+
+if (require('os').platform != 'darwin') muse.useSSL = true;
 
 global.tld = __dirname;
 
@@ -7,9 +9,9 @@ const local = './local/src/';
 console.log('launching...');
 
 var obtains = [
-  `./server/express.js`,
-  `./server/wsServer.js`,
-  './hubBook.js',
+  `${tld}/local/src/server/express.js`,
+  `${tld}/local/src/server/wsServer.js`,
+  `${tld}/local/src/hubBook.js`,
   'child_process',
 ];
 

@@ -1,6 +1,6 @@
 if (!window) var window = global;
 
-obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { Server }, url)=> {
+obtain([`${__dirname}/express.js`, 'ws', 'url'], ({ httpServer, httpsServer, sessionParser }, { Server }, url)=> {
   if (!window.wsServer) {
     window.wsServer = new Server({
       verifyClient: (info, done) => {
@@ -9,7 +9,7 @@ obtain(['./server/express.js', 'ws', 'url'], ({ httpServer, sessionParser }, { S
         });
       },
 
-      server: httpServer, });
+      server: (muse.useSSL ? httpsServer : httpServer), });
     var webSock = null;
 
     wsServer.broadcast = function (data) {
