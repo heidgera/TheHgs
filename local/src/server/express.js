@@ -50,10 +50,6 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https, http)=> {
 
       window.expressServer.httpsServer = https.createServer(options, fileServer).listen(443);
 
-      window.expressServer.httpServer.get('*', function (req, res) {
-        res.redirect('https://' + req.headers.host + req.url);
-      });
-
       httpApp = function (req, res) {
         res.redirect('https://' + req.headers.host + req.url);
       };
