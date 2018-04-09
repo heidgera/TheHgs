@@ -15,6 +15,14 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
 
   fileServer.set('views', path.join(__dirname, '../../client/views'));
 
+  // router.param('hub', (req, res, next, hub)=> {
+  //   var nKey = nameKeys[req.params.hub];
+  //   var hubId = nKey && nKey.ws && nKey.ws.id;
+  //   req.session.remoteId = hubId;
+  //   req.session.remoteName = req.params.hub;
+  //   next();
+  // });
+
   router.get('/hub/:hub', (req, res)=> {
     var nKey = nameKeys[req.params.hub];
     var hubId = nKey && nKey.ws && nKey.ws.id;
@@ -23,11 +31,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
     res.render('hub.pug', { title: req.params.hub, hubName:  hubId });
   });
 
-  router.get('/direct/:hub/:spoke', (req, res)=> {
-    var nKey = nameKeys[req.params.hub];
-    var hub = nKey && nKey.ws && nKey.ws.id;
-    res.render('hub.pug', { title: req.params.hub, hubName:  hubId, spokeName: req.params.spoke });
-  });
+  // router.get('/direct/:hub/:route(*)', (req, res)=> {
+  //   var nKey = nameKeys[req.params.hub];
+  //   var hub = nKey && nKey.ws && nKey.ws.id;
+  //   res.render('hub.pug', { title: req.params.hub, hubName:  hubId, spokeName: req.params.spoke });
+  // });
 
   wss.onClientConnect = (ws, req)=> {
     if (req) {
@@ -39,13 +47,14 @@ obtain(obtains, ({ fileServer, router }, { wss }, path, request)=> {
 
       if (req.session.remoteName) {
         ws.remote = req.session.remoteName;
-        console.log(ws.remote);
+        console.log(ws.remote + ' is the remote name');
       }
 
       console.log('sending id:');
       wss.send(ws.id, { setId: ws.id });
 
       if (req.session.remoteId && !!wss.orderedClients[req.session.remoteId]) {
+        console.log('sending req');
         wss.send(req.session.remoteId, { cnxnRequest: {
           auth: true,
           fromId: ws.id,

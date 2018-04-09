@@ -1,6 +1,6 @@
 'use strict';
 
-muse.useSSL = true;
+//muse.useSSL = true;
 
 obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseControl })=> {
 
@@ -13,6 +13,13 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
     channel.addListener('message', (msg)=> {
       µ('#msgText').textContent = msg;
     });
+
+    µ('#user').onkeyup = (e)=> {
+      if (e.keyCode == 13) {
+        channel.send({ message: µ('#user').value });
+        µ('#user').value = '';
+      }
+    };
 
     channel.onConnect = ()=> {
       //ws.close();

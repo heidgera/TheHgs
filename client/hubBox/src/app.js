@@ -1,62 +1,14 @@
 'use strict';
 
-obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseControl })=> {
+obtain(['./src/connection.js'], (cnxn)=> {
+
+  muse.debug = true;
+
   exports.app = {};
   var config = {};
-  config.cnxnURL = '172.24.0.90';
+  config.cnxnURL = '127.0.0.1';
   config.name = 'box';
   config.key = 'secure';
-
-  var ws = new MuseControl(config.cnxnURL);
-
-  var channels = {};
-
-  ws.onConnect = ()=> {
-    //ws.setId(config.name);
-    ws.send({ requestNickname: {
-      name: config.name,
-      key: config.key,
-    }, });
-
-    ws.addListener('setId', (id)=> {
-      ws.id = id;
-    });
-
-    ws.addListener('nameRequest', (approved)=> {
-      if (!approved) {
-        console.log('name taken');
-        config.name = '';
-        µ('#name').value = '';
-      } else console.log('registered as ' + config.name);
-    });
-
-    ws.addListener('cnxnRequest', (req)=> {
-      if (req.auth && !channels[req.fromId] && req.toId == ws.id) {
-        console.log('got connection request');
-        var channel = new DataChannel(ws);
-
-        channel.connect(req.fromId);
-
-        channel.addListener('message', (msg)=> {
-          console.log(msg);
-        });
-
-        channel.onConnect = ()=> {
-          console.log('sending test message');
-          channel.send({ message: 'test message from ' + config.name });
-        };
-
-        channel.onClose = ()=> {
-          console.log('closing channel');
-          delete channels[req.fromId];
-        };
-
-        channels[req.id] = channel;
-      }
-
-    });
-
-  };
 
   exports.app.start = ()=> {
     µ('#name').value = config.name;
@@ -68,7 +20,18 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
       //fs.writeFileSync(confDir, JSON.stringify(config));
     };
 
-    ws.connect();
+    cnxn.setup(config);
+
+    cnxn.onNewChannel = (channel)=> {
+      channel.addListener('message', (data)=> {
+        for (var id in cnxn.channels) {
+          if (cnxn.channels.hasOwnProperty(id)) {
+            if (id != channel.id) cnxn.channels[id].send({ message: data });
+          }
+        }
+      });
+
+    };
 
     console.log('started');
 
