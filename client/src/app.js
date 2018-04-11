@@ -1,6 +1,6 @@
 'use strict';
 
-//muse.useSSL = true;
+muse.useSSL = true;
 
 obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseControl })=> {
 
