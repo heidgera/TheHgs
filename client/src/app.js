@@ -38,7 +38,7 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
 
     ws.addListener('login', ()=> {
       console.log('not logged in');
-      post('http://' + window.location.hostname + '/auth/box', {
+      post('https://' + window.location.hostname + '/auth/box', {
         user: 'admin',
         pass: 'admin',
       }).then((res)=> {
