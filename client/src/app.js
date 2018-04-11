@@ -1,6 +1,6 @@
 'use strict';
 
-muse.useSSL = true;
+//muse.useSSL = true;
 
 obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseControl })=> {
 
@@ -23,7 +23,7 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
 
     channel.onConnect = ()=> {
       //ws.close();
-      console.log('sending test message');
+      console.log('Connected to remote');
       channel.send({ message: 'test message from a client' });
     };
 

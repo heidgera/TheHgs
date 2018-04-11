@@ -39,7 +39,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
     var authWS = wss.orderedClients[hubId];
     if (authWS) {
       var oldVerified = req.session.verified;
-      authWS.addListener('verify', deets=> {
+      authWS.addListener('user:verify', deets=> {
         req.session.userId = deets.id;
         req.session.homeId = hubId;
         req.session.verified = deets.verified;
@@ -49,7 +49,35 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
 
         requestConnection(req);
       });
-      wss.send(hubId, { verify: { user: req.body.user, pass: saltHash.simpleHash(req.body.pass) } });
+      wss.send(hubId, 'user:verify', { user: req.body.user, pass: saltHash.simpleHash(req.body.pass) });
+    }
+  });
+
+  router.post('/logout', (req, res)=> {
+    req.session.userId = '';
+    req.session.verified = false;
+    req.session.user = '';
+
+    res.json({ loggedOut: true });
+  });
+
+  router.post('/newUser/:hub', (req, res)=> {
+    console.log('requesting new account from ' + req.params.hub);
+    var nKey = nameKeys[req.params.hub];
+    var hubId = nKey && nKey.ws && nKey.ws.id;
+    var authWS = wss.orderedClients[hubId];
+    if (authWS) {
+      authWS.addListener('user:create', deets=> {
+        req.session.userId = deets.id;
+        req.session.homeId = hubId;
+        req.session.verified = deets.verified;
+        req.session.user = req.body.user;
+        //res.cookie('name', 'value', { signed: true });
+        res.json({ verified: deets.verified });
+
+        requestConnection(req);
+      });
+      wss.send(hubId, 'user:create', { user: req.body.user, pass: saltHash.simpleHash(req.body.pass), key: saltHash.simpleHash(req.body.key) });
     }
   });
 
