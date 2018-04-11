@@ -33,6 +33,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
   });
 
   router.post('/auth/:hub', (req, res)=> {
+    console.log('authenticating to ' + req.params.hub);
     var nKey = nameKeys[req.params.hub];
     var hubId = nKey && nKey.ws && nKey.ws.id;
     var authWS = wss.orderedClients[hubId];
