@@ -10,6 +10,8 @@ obtain(['./src/connection.js'], (cnxn)=> {
   config.name = 'box';
   config.key = 'secure';
 
+  var users = [{ name: 'admin', id: '69157b9d-3785-4969-afb1-20f0351f12e6', hash: '775dfe537685d44f247b961557f4a56e0fe4ac0d09392b21c9e62a4934cd5506b3279850dc9084e17e16cdf4de2c0a9c4f2d9c3214421ab0b8adfdfa7ea35c67', salt: '66785d6443364fdf' }];
+
   exports.app.start = ()=> {
     µ('#name').value = config.name;
     µ('#cnxnURL').value = config.cnxnURL || '127.0.0.1';;
@@ -18,6 +20,13 @@ obtain(['./src/connection.js'], (cnxn)=> {
       config.name = µ('#name').value;
       config.cnxnURL = µ('#cnxnURL').value;
       //fs.writeFileSync(confDir, JSON.stringify(config));
+    };
+
+    cnxn.authUser = (deets)=> {
+      var locl = users.find(user=>user.name == deets.user);
+      if (!locl) return ({ id: '', verified: false });
+      //console.log(locl);
+      return { id: locl.id, verified: true };
     };
 
     cnxn.setup(config);
@@ -31,6 +40,7 @@ obtain(['./src/connection.js'], (cnxn)=> {
         }
       });
 
+      channel.send({ message: 'test call' });
     };
 
     console.log('started');

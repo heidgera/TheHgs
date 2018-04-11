@@ -1,6 +1,6 @@
 'use strict';
 
-muse.useSSL = true;
+//muse.useSSL = true;
 
 obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseControl })=> {
 
@@ -34,6 +34,17 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
     ws.addListener('setId', (id)=> {
       console.log('Set id to ' + id);
       ws.id = id;
+    });
+
+    ws.addListener('login', ()=> {
+      console.log('not logged in');
+      post('http://' + window.location.hostname + '/auth/box', {
+        user: 'admin',
+        pass: 'admin',
+      }).then((res)=> {
+        var ret = JSON.parse(res);
+        console.log(ret);
+      });
     });
 
     ws.addListener('error', (msg)=> {

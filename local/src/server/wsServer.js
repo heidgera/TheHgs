@@ -56,10 +56,20 @@ obtain([`${__dirname}/express.js`, 'ws', 'url'], ({ httpServer, httpsServer, ses
               if (orderedCallbacks[data._id]) orderedCallbacks[data._id]();
             } else if (key == 'timeSync') {
               ws.send(JSON.stringify({ serverTime: Date.now() }));
-            } else if (key in listeners) listeners[key](data[key], data, ws);
+            } else if (key in listeners) {
+              listeners[key](data[key], data, ws);
+            } else if (key in ws.listeners) {
+              ws.listeners[key](data[key], data, ws);
+            }
           }
         }
       });
+
+      ws.listeners = {};
+
+      ws.addListener = (evt, cb)=> {
+        listeners[evt] = cb;
+      };
 
       ws.on('close', function () {
         wsServer.onClientDisconnect(req);

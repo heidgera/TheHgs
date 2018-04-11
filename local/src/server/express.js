@@ -17,6 +17,7 @@ obtain(obtains, (express, bodyParser, fs, fileUpload, session, https, http)=> {
       secret: 'secret',
       resave: true,
       saveUninitialized: true,
+      cookie: { httpOnly: true, secure: false },
     });
     // window.expressServer.sessionParser = session({
     //   saveUninitialized: false,
