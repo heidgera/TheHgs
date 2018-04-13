@@ -117,7 +117,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
 
     console.log('passing connection candidate from' + (ws.remote ? 'client' : 'box'));
     if (wss.orderedClients[data.to]) {
-      wss.send(data.to, { connect: data });
+      wss.send(data.to, 'cnxn:candidate', data);
     } else {
       wss.send(ws.id, { error: 'No such client' });
     }
@@ -138,7 +138,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
     if (wss.orderedClients[data.to]) {
       console.log(data.to);
-      wss.send(data.to, { offer: data });
+      wss.send(data.to, 'cnxn:description', data);
     } else {
       wss.send(ws.id, { error: 'No such client' });
     }
