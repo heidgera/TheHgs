@@ -27,7 +27,7 @@ obtain([`${__dirname}/express.js`, 'ws', 'url'], ({ httpServer, httpsServer, ses
     };
 
     wsServer.send = (_id, obj, data)=> {
-      if (data) obj = { [obj]: data };
+      if (typeof obj == 'string') obj = { [obj]: data };
       wsServer.orderedClients[_id].send(JSON.stringify(obj));
     };
 

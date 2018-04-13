@@ -1,0 +1,104 @@
+muse-div.fadeDiv {
+  display: none;
+  opacity: 0;
+}
+
+muse-div.fadeDiv.show_running {
+  display: block;
+  transition: opacity .5s ease;
+}
+
+muse-div.fadeDiv[show] {
+  display: block;
+  opacity: 1;
+}
+
+.fullCenter {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+
+#loginCard {
+	--border-radius: 1vmin;
+	--button-pos-x: 10vmin;
+	--button-pos-y: 5vmax;
+	position: relative;
+	display: inline-block;
+	/* top: var(--button-pos-y);
+	right: var(--button-pos-x); */
+	top: -100vh;
+	min-width: 12em;
+  /* width: 80vmin; */
+	/* transform: scale(0);
+	transform-origin: right top; */
+	z-index: 500;
+
+  text-align: center;
+	font-size: 2em;
+  border: 1px solid #aaa;
+}
+
+#loginCard.show_running {
+	transition: all .5s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+}
+
+#loginCard[show] {
+	top: 10vh;
+	right: 2.5vw;
+	/* transform: scale(1); */
+}
+
+#loginCard .cardContent {
+  font-size: .65em;
+  padding: 1em;
+}
+
+#loginCard muse-menu {
+	font-size: .75em;
+	font-family: sans-serif;
+	white-space: nowrap;
+	display: block;
+	font-weight: lighter;
+  --background-color: #fafafa;
+  --font-color: #555;
+	--shadow-style: 0;
+	border-bottom: 1px solid #ddd;
+	/* box-shadow: 0 0 1vh rgba(0, 0, 0, 0.25); */
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+#loginCard .textReply {
+  line-height: 1em;
+  font-size: .85em;
+  color: #a00;
+}
+
+#loginCard input {
+  padding: .5em;
+  font-size: 1em;
+  box-sizing: border-box;
+  border-radius: .25em;
+  border: solid 1px rgba(0,0,0, .2);
+}
+
+#loginCard input::placeholder {
+  color: #999;
+}
+
+#loginCard but-ton{
+  display: inline-block;
+}
+
+.dividr {
+	display: inline-block;
+	height: 1px;
+	width: 80%;
+	background-color: #ddd;
+}
+
+.noteText {
+	color: #777;
+	font-size: 1em;
+}

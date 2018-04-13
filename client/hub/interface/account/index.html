@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="style.css"></link>
+<script src="index.js"></script>
+<div refContent>
+  <span id='loginIcon' class='svgIcon'>°</span>
+
+  <div class='fullCenter'>
+    <muse-card id='loginOpts'>
+      <muse-menu id='loginMenu' title='Sign into your account'>
+      </muse-menu>
+      <div id='login' class='cardContent'>
+        <muse-div id='loginDiv' class='fadeDiv' show>
+          <div>Username</div><br />
+          <input id='user' type='text'></input><br /><br />
+          <div>Hubname</div><br />
+          <input id='hubname' type='text'></input><br /><br />
+          <div>Password</div><br />
+          <input id='password' type='password'></input><br /><br />
+          <!-- <but-ton id='cancel' class='cancel'>Cancel</but-ton> -->
+          <but-ton id='accept' class='accept'>Login</but-ton><br /><br />
+          <div class='dividr'></div><br />
+          <div id='signup'>Create an account</div>
+        </muse-div>
+        <muse-div id='createDiv' class='fadeDiv'>
+          <div>Username</div><br />
+          <input id='creat_user' type='text'></input><br /><br />
+          <div>Hubname</div><br />
+          <input id='create_hubname' type='text'></input><br /><br />
+          <div>Hub key</div><br />
+          <input id='create_key' type='text'></input><br /><br />
+          <div>Password</div><br />
+          <input id='create_password' type='password'></input><br /><br />
+          <div>Confirm password</div><br />
+          <input id='create_confirm' type='password'></input><br /><br />
+          <!-- <but-ton id='cancel' class='cancel'>Cancel</but-ton> -->
+          <but-ton id='createAccept' class='accept'>Create account</but-ton><br /><br />
+          <div class='dividr'></div><br />
+          <div id='signup'>Already have an account? Login</div>
+        </muse-div>
+        <div id='accountManage' class='loggedIn'>
+          <but-ton id='logout' class='accept'>Logout</but-ton>
+        </div>
+      </div>
+    </muse-card>
+  </div>
+</div>

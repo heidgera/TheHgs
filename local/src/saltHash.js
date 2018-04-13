@@ -27,7 +27,7 @@ obtain(['crypto'], (crypto)=> {
     var value = hash.digest('hex');
     return {
         salt: salt,
-        passwordHash: value,
+        hash: value,
       };
   };
 

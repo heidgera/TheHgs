@@ -15,6 +15,8 @@ var obtains = [
   'child_process',
 ];
 
+global.appData = {};
+
 obtain(obtains, ({ fileServer, router }, { wss }, hubBook, { exec })=> {
 
   router.post('/security', function (req, res) {

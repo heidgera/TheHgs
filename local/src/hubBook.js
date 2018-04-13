@@ -4,15 +4,15 @@ var obtains = [
   `${__dirname}/server/express.js`,
   `${__dirname}/server/wsServer.js`,
   `${__dirname}/saltHash.js`,
+  `${__dirname}/userManagement.js`,
+  `${__dirname}/hubManagement.js`,
   'path',
   'request',
 ];
 
-obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
+obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, request)=> {
 
   var sent = false;
-
-  var nameKeys = {};
 
   fileServer.set('views', path.join(__dirname, '../../client/views'));
 
@@ -25,59 +25,14 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
   // });
 
   router.get('/hub/:hub', (req, res)=> {
-    var nKey = nameKeys[req.params.hub];
-    var hubId = nKey && nKey.ws && nKey.ws.id;
-    req.session.remoteId = hubId;
+    var hub = hubs.find('name', req.params.hub);
+    req.session.remoteId = hub && hub.id;
     req.session.remoteName = req.params.hub;
-    res.render('hub.pug', { title: req.params.hub, hubName:  hubId });
-  });
-
-  router.post('/auth/:hub', (req, res)=> {
-    console.log('authenticating to ' + req.params.hub);
-    var nKey = nameKeys[req.params.hub];
-    var hubId = nKey && nKey.ws && nKey.ws.id;
-    var authWS = wss.orderedClients[hubId];
-    if (authWS) {
-      var oldVerified = req.session.verified;
-      authWS.addListener('user:verify', deets=> {
-        req.session.userId = deets.id;
-        req.session.homeId = hubId;
-        req.session.verified = deets.verified;
-        req.session.user = req.body.user;
-        //res.cookie('name', 'value', { signed: true });
-        res.json({ verified: deets.verified });
-
-        requestConnection(req);
-      });
-      wss.send(hubId, 'user:verify', { user: req.body.user, pass: saltHash.simpleHash(req.body.pass) });
-    }
-  });
-
-  router.post('/logout', (req, res)=> {
-    req.session.userId = '';
-    req.session.verified = false;
-    req.session.user = '';
-
-    res.json({ loggedOut: true });
-  });
-
-  router.post('/newUser/:hub', (req, res)=> {
-    console.log('requesting new account from ' + req.params.hub);
-    var nKey = nameKeys[req.params.hub];
-    var hubId = nKey && nKey.ws && nKey.ws.id;
-    var authWS = wss.orderedClients[hubId];
-    if (authWS) {
-      authWS.addListener('user:create', deets=> {
-        req.session.userId = deets.id;
-        req.session.homeId = hubId;
-        req.session.verified = deets.verified;
-        req.session.user = req.body.user;
-        //res.cookie('name', 'value', { signed: true });
-        res.json({ verified: deets.verified });
-
-        requestConnection(req);
-      });
-      wss.send(hubId, 'user:create', { user: req.body.user, pass: saltHash.simpleHash(req.body.pass), key: saltHash.simpleHash(req.body.key) });
+    //res.render('hub.pug', { title: req.params.hub, hubName:  hub && hub.id });
+    if (req.session.user) res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
+    else {
+      req.session.redirect = hub.name;
+      res.redirect('/hub');
     }
   });
 
@@ -89,20 +44,36 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
 
   var requestConnection = (req)=> {
     if (req.session.remoteId && !!wss.orderedClients[req.session.remoteId]) {
-      wss.send(req.session.remoteId, { cnxnRequest: {
-        user: {
-          name: req.session.user,
-          id: req.session.userId,
-          trusted: req.session.verified,
-        },
+      wss.send(req.session.remoteId, 'cnxn:request', {
+        user: req.session.user,
         fromId: req.session.id,
         toId: req.session.remoteId,
-      }, });
+      });
+      //wss.send(req.session.id, 'user:account', req.session.user);
     } else if (req.session.remoteName) {
       wss.send(req.session.id, { error: 'fourohfour' });
     } else {
       console.log('did not request connection');
     }
+  };
+
+  users.onLogin = (req)=> {
+    if (req.session.redirect) {
+      wss.send(req.session.id, 'route:redirect', {
+        path: `/hub/${req.session.redirect}`,
+        title: req.session.redirect,
+      });
+      req.session.redirect = null;
+      requestConnection(req);
+    }
+  };
+
+  users.onLogout = (req)=> {
+    wss.send(req.session.id, 'route:redirect', {
+      path: `/hub/`,
+      title: 'Login',
+    });
+    requestConnection(req);
   };
 
   wss.onClientConnect = (ws, req)=> {
@@ -115,17 +86,19 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
       req.session.ws = ws;
 
       console.log('sending id:');
-      wss.send(ws.id, { setId: ws.id });
+      wss.send(ws.id, { setId: id });
 
       if (req.session.remoteName) {
         ws.remote = req.session.remoteName;
         console.log(ws.remote + ' is the remote name');
       }
 
-      if (req.session.verified) requestConnection(req);
-      else {
-        wss.send(ws.id, { login: '' });
-      }
+      var user = req.session.user;
+
+      if (user && user.trusted) {
+        wss.send(req.session.id, 'user:account', req.session.user);
+        requestConnection(req);
+      } else console.log('sending acct'), wss.send(req.session.id, 'user:account', false);
     }
 
   };
@@ -147,13 +120,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, path, request)=> {
     }
   });
 
-  wss.addListener('requestNickname', (data, arr, ws)=> {
-    var res = { nameRequest: '' };
-    if (!nameKeys[data.name] || nameKeys[data.name].key == data.key) {
-      nameKeys[data.name] = { key: data.key, ws: ws };
-      res.nameRequest = true;
-    } else res.nameRequest = false;
-    wss.send(ws.id, res);
+  wss.addListener('cnxn:setName', (data, arr, ws)=> {
+    data.ws = ws;
+    data.cnxnId = ws.id;
+
+    wss.send(ws.id, 'cnxn:setName', hubs.register(data));
   });
 
   wss.addListener('relay', (data, req)=> {

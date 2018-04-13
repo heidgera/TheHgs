@@ -7,6 +7,10 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
   exports.app = {};
 
   exports.app.start = ()=> {
+    var remote = window.location.pathname;
+
+    remote = remote.replace('/hub/', '');
+
     var ws = new MuseControl(window.location.hostname);
     var channel = new DataChannel(ws);
 
@@ -38,7 +42,7 @@ obtain(['µ/dataChannel.js', 'µ/commandClient.js'], ({ DataChannel }, { MuseCon
 
     ws.addListener('login', ()=> {
       console.log('not logged in');
-      post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/auth/${µ('title')[0].textContent}`, {
+      post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/auth/${remote}`, {
         user: 'admin',
         pass: 'admin',
       }).then((res)=> {

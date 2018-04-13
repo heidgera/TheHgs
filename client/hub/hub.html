@@ -6,15 +6,15 @@
     <script src="../common/src/muse/main.js" main="./src/app.js"></script>
   	<link rel="stylesheet" href="css/style.css"></link>
   </head>
-  <body>
+  <body class='loggedOut'>
     <muse-menu id='mainMenu' title='Instron Control'>
       <span id='close' class='svgIcon' slot='left'></span>
-      <ref-div id='wifiConfig' src='./src/interface/wifiConfig'></ref-div>
+      <ref-div id='wifiConfig' src='interface/account'></ref-div>
     </muse-menu>
     <div class='config'>
-      <label>Nickname: </label><input type="text" id='name'></input><br /><br />
-      <label>Connector URL: </label><input type="text" id='cnxnURL'></input><br /><br />
-      <div id='saveCfg'>Save</div>
+      <input id='msgBox' type='text'></input>
+      <div id='msgText' class='msgText'>
+      </div>
     </div>
   </body>
 </html>
