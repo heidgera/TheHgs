@@ -28,6 +28,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     var hub = hubs.find('name', req.params.hub);
     req.session.remoteId = hub && hub.id;
     req.session.remoteName = req.params.hub;
+    req.session.remoteUUID = hub && hub.uuid;
     //res.render('hub.pug', { title: req.params.hub, hubName:  hub && hub.id });
     if (req.session.user) res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
     else {
@@ -98,7 +99,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       if (user && user.trusted) {
         wss.send(req.session.id, 'user:account', req.session.user);
         requestConnection(req);
-      } else console.log('sending acct'), wss.send(req.session.id, 'user:account', false);
+      } else wss.send(req.session.id, 'user:account', false);
     }
 
   };
@@ -135,7 +136,6 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
     if (wss.orderedClients[data.target]) {
       console.log(data.target);
-      wss.send(data.target, { error: data });
       wss.send(data.target, { offer: data });
     } else {
       wss.send(ws.id, { error: 'No such client' });

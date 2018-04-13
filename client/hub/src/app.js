@@ -33,15 +33,16 @@ obtain(obtains, (user, { DataChannel }, { MuseControl }, comps)=> {
       }
     };*/
 
+    channel.addListener('profile:view', (data)=> {
+      if (data.id == appData.user.id) user.handleProfileData(data);
+      else console.log('someone else');
+    });
+
     channel.onConnect = ()=> {
       //ws.close();
       console.log('Connected to remote');
       //channel.send({ message: 'test message from a client' });
       channel.send('profile:view', { user: appData.user });
-
-      channel.addListener('profile:view', (data)=> {
-        console.log(data);
-      });
     };
 
     ws.onConnect = ()=> {
