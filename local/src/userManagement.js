@@ -29,6 +29,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, hubs, path, request)
           trusted: deets.verified,
           name: req.body.user,
           hub: hub.name,
+          hubId: hub.uuid,
         };
         //res.cookie('name', 'value', { signed: true });
         exports.onLogin(req);

@@ -34,7 +34,7 @@ obtain(obtains, (saltHash, uuidv4, fs)=> {
       ws: info.ws,
     };
     window.appData.hubs.push(newHub);
-    var simple = window.appData.hubs.map(hub=> {return { name: hub.name, uuid: hub.id, hash: hub.hash, salt: hub.salt };});
+    var simple = window.appData.hubs.map(hub=> {return { name: hub.name, uuid: hub.uuid, hash: hub.hash, salt: hub.salt };});
     fs.writeFileSync(hubList, JSON.stringify({ hubs: simple }));
 
     return newHub;

@@ -19,23 +19,37 @@ obtain(obtains, (user, { DataChannel }, { MuseControl }, comps)=> {
     console.log('starting...');
 
     var ws = new MuseControl(window.location.hostname);
-    var peers = new DataChannel(ws);
+    var channel = new DataChannel(ws);
 
-    var onHomeChannel = (peer)=> {
-      channel.send('profile:view', { user: appData.user });
-      peer.addListener('profile:view', (data)=> {
-        if (data.id == appData.user.id) user.handleProfileData(data);
-        else console.log('someone else');
-      });
+    channel.addListener('message', (msg)=> {
+      //µ('#msgText').textContent = msg;
+      console.log(msg);
+    });
+
+    /*µ('#msgBox').onkeyup = (e)=> {
+      if (e.keyCode == 13) {
+        channel.send({ message: µ('#user').value });
+        µ('#user').value = '';
+      }
+    };*/
+
+    channel.addListener('profile:view', (data)=> {
+      if (data.id == appData.user.id) user.handleProfileData(data);
+      else console.log('someone else');
+    });
+
+    channel.onChannelInfo = (data)=> {
+      console.log('Got channel info');
+      console.log(data);
+      channel.host = data;
     };
 
-    peers.onPeerConnect = (peer)=> {
-      console.log('Connected to ' + peer.host.name);
-      if (peer.host.id == appData.user.hubId) onHomeChannel(peer);
-
-      peer.addListener('message', (msg)=> {
-        console.log(msg);
-      });
+    channel.onConnect = ()=> {
+      //ws.close();
+      console.log('Connected to remote');
+      //channel.send({ message: 'test message from a client' });
+      if (channel.host.id == appData.user.hubId)
+        channel.send('profile:view', { user: appData.user });
     };
 
     ws.onConnect = ()=> {

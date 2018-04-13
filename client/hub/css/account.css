@@ -102,3 +102,12 @@ muse-div.fadeDiv[show] {
 	color: #777;
 	font-size: 1em;
 }
+
+#account {
+  font-size: .5em;
+}
+
+#account img {
+  height: 2em;
+  width: auto;
+}

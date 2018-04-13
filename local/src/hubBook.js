@@ -32,7 +32,10 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     //res.render('hub.pug', { title: req.params.hub, hubName:  hub && hub.id });
     if (req.session.user) res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
     else {
-      req.session.redirect = hub.name;
+      if (hub) {
+        req.session.redirect = hub.name;
+      }
+
       res.redirect('/hub');
     }
   });
@@ -86,7 +89,6 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       ws.id = req.session.id;
       req.session.ws = ws;
 
-      console.log('sending id:');
       wss.send(ws.id, { setId: id });
 
       if (req.session.remoteName) {
@@ -111,11 +113,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     }
   };
 
-  wss.addListener('connect', (data, req, ws)=> {
+  wss.addListener('cnxn:candidate', (data, req, ws)=> {
 
     console.log('passing connection candidate from' + (ws.remote ? 'client' : 'box'));
-    if (wss.orderedClients[data.target]) {
-      wss.send(data.target, { connect: data });
+    if (wss.orderedClients[data.to]) {
+      wss.send(data.to, { connect: data });
     } else {
       wss.send(ws.id, { error: 'No such client' });
     }
@@ -128,15 +130,15 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     wss.send(ws.id, 'cnxn:setName', hubs.register(data));
   });
 
-  wss.addListener('relay', (data, req)=> {
-    wss.send(data.toId, { relay: data.data });
+  wss.addListener('cnxn:relay', (data, req)=> {
+    wss.send(data.toId, 'cnxn:relay', data);
   });
 
-  wss.addListener('offer', (data, req, ws)=> {
+  wss.addListener('cnxn:description', (data, req, ws)=> {
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
-    if (wss.orderedClients[data.target]) {
-      console.log(data.target);
-      wss.send(data.target, { offer: data });
+    if (wss.orderedClients[data.to]) {
+      console.log(data.to);
+      wss.send(data.to, { offer: data });
     } else {
       wss.send(ws.id, { error: 'No such client' });
     }

@@ -93,17 +93,6 @@ obtain(obtains, ()=> {
 
     };
 
-    µ('#account').onclick = ()=> {
-      console.log('logging out');
-
-      post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/logout`, {})
-      .then((res)=> {
-        reset();
-        bin.card.opened = true;
-        exports.handleData(JSON.parse(res)['user:account']);
-      });
-    };
-
     bin.card.makeTransitionState('show', 'hide');
 
     bin.card.onShow = ()=> {
@@ -143,6 +132,42 @@ obtain(obtains, ()=> {
 
   };
 
+  var onLogout = ()=> {
+    µ('#account').innerHTML = '';
+    µ('#account').textContent = 'Sign In';
+    µ('#account').onclick = null;
+
+    exports.onLogout();
+  };
+
+  var onLogin = (user)=> {
+    createAccountDrop(user);
+
+    µ('#account').onclick = ()=> {
+      console.log('logging out');
+
+      post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/logout`, {})
+      .then((res)=> {
+        reset();
+        bin.card.opened = true;
+        onLogout();
+        exports.handleData(JSON.parse(res)['user:account']);
+      });
+    };
+  };
+
+  exports.onLogout = ()=> {
+
+  };
+
+  exports.onLogin = (user)=> {
+
+  };
+
+  exports.handleProfileData = (data)=> {
+    onLogin(data);
+  };
+
   exports.handleData = (data)=> {
     if (data && data.error) {
       if (data.error.type == 'NO_HUB') {
@@ -155,6 +180,7 @@ obtain(obtains, ()=> {
       bin.card.show = !(data && data.trusted);
       µ('body')[0].className = (!!data ? 'loggedIn' : 'loggedOut');
       if (data && data.trusted) {
+
       } else if (data) {
         bin.LogIn.pass.output.textContent = 'Username and password do not match';
       }
