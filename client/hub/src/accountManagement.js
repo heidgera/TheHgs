@@ -140,6 +140,13 @@ obtain(obtains, ()=> {
     exports.onLogout();
   };
 
+  var createAccountDrop = (data)=> {
+    µ('#account').textContent = '';
+    bin.acct = {};
+    bin.acct.icon = µ('+img', µ('#account'));
+    bin.acct.icon.src = data.icon;
+  };
+
   var onLogin = (user)=> {
     createAccountDrop(user);
 

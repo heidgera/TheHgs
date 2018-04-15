@@ -85,11 +85,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       console.log('client connected');
       var id = req.session.id;
       wss.orderedClients[req.session.id] = ws;
-      console.log(id);
+      //console.log(id);
       ws.id = req.session.id;
       req.session.ws = ws;
 
-      wss.send(ws.id, { setId: id });
+      //wss.send(ws.id, { setId: id });
 
       if (req.session.remoteName) {
         ws.remote = req.session.remoteName;
@@ -114,7 +114,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
   };
 
   wss.addListener('cnxn:candidate', (data, req, ws)=> {
-
+    if (!data.from) data.from = ws.id;
     console.log('passing connection candidate from' + (ws.remote ? 'client' : 'box'));
     if (wss.orderedClients[data.to]) {
       wss.send(data.to, 'cnxn:candidate', data);
@@ -131,10 +131,12 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
   });
 
   wss.addListener('cnxn:relay', (data, req)=> {
-    wss.send(data.toId, 'cnxn:relay', data);
+    if (!data.from) data.from = ws.id;
+    wss.send(data.to, 'cnxn:relay', data);
   });
 
   wss.addListener('cnxn:description', (data, req, ws)=> {
+    if (!data.from) data.from = ws.id;
     console.log('passing local description from ' + (ws.remote ? 'client' : 'box'));
     if (wss.orderedClients[data.to]) {
       console.log(data.to);
