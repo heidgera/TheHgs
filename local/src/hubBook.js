@@ -130,7 +130,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     wss.send(ws.id, 'cnxn:setName', hubs.register(data));
   });
 
-  wss.addListener('cnxn:relay', (data, req)=> {
+  wss.addListener('cnxn:relay', (data, req, ws)=> {
     if (!data.from) data.from = ws.id;
     wss.send(data.to, 'cnxn:relay', data);
   });
