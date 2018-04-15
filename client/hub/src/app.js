@@ -22,7 +22,7 @@ obtain(obtains, (user, { DataChannel }, { MuseControl }, comps)=> {
     var peers = new DataChannel(ws);
 
     var onHomeChannel = (peer)=> {
-      channel.send('profile:view', { user: appData.user });
+      peer.send('profile:view', { user: appData.user });
       peer.addListener('profile:view', (data)=> {
         if (data.id == appData.user.id) user.handleProfileData(data);
         else console.log('someone else');
@@ -30,8 +30,8 @@ obtain(obtains, (user, { DataChannel }, { MuseControl }, comps)=> {
     };
 
     peers.onPeerConnect = (peer)=> {
-      console.log('Connected to ' + peer.host.name);
-      if (peer.host.id == appData.user.hubId) onHomeChannel(peer);
+      console.log('Connected to ' + peer.info.name);
+      if (peer.info.id == appData.user.hubId) onHomeChannel(peer);
 
       peer.addListener('message', (msg)=> {
         console.log(msg);
