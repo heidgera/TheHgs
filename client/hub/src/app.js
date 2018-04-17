@@ -32,11 +32,6 @@ obtain(obtains, (posts, account, peers, socket, comps)=> {
       console.log('connected to websocket');
     };
 
-    // ws.addListener('setId', (id)=> {
-    //   console.log('Set id to ' + id);
-    //   ws.id = id;
-    // });
-
     ws.addListener('route:redirect', (data)=> {
       document.title = data.title;
       history.pushState(appData.user, data.title, data.path);

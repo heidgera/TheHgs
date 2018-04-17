@@ -14,6 +14,7 @@ obtain(obtains, (peers, socket)=> {
         var _this = this;
 
         this.ws = socket.connect(window.location.hostname);
+        peers.init(this.ws);
 
         this.ws.addListener('user:account', (data)=> {
           _this.handleLogin(data);
@@ -49,7 +50,7 @@ obtain(obtains, (peers, socket)=> {
             .then((res)=> {
               console.log('Requesting Home Connection');
               if (data.hub.cnxnId) {
-                _this.home = peers.getPeer(data.hub.cnxnId);
+                _this.home = peers.getPeer({ remoteId: data.hub.cnxnId, passive: true });
                 _this.home.onconnect = ()=> {
                   _this.home.send('profile:view', { user: appData.user });
                 };
