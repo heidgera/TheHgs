@@ -18,6 +18,7 @@ obtain(obtains, (posts, account, peers, socket, comps)=> {
 
   exports.app.start = ()=> {
     var ws = socket.connect(window.location.hostname);
+    peers.init(ws);
 
     µ('#blurDiv').makeTransitionState('blur');
     µ('#blurDiv').blur = false;
