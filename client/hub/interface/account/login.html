@@ -1,0 +1,31 @@
+<!-- <link rel="stylesheet" href="style.css"></link> -->
+<!-- <script src="index.js"></script> -->
+<div refContent>
+  <muse-card id='loginCard' show>
+    <muse-menu id='loginMenu' title='Sign into your account'>
+    </muse-menu>
+    <div class='cardContent'>
+      <muse-div id='loginDiv' class='fadeDiv' show>
+        <input id='username' type='text' placeholder="Username"></input>
+        <input id='hubname' type='text' placeholder="Hubname"></input>
+        <input id='password' type='password' placeholder="Password" error='oops'></input><br />
+        <!-- <but-ton id='cancel' class='cancel'>Cancel</but-ton> -->
+        <but-ton id='accept' class='accept'>Login</but-ton><br /><br />
+        <div class='dividr'></div><br />
+        <div id='signup'>Create an account</div>
+      </muse-div>
+
+      <muse-div id='createDiv' class='fadeDiv'>
+        <input type='text' placeholder="Username"></input>
+        <input type='text' placeholder="Hubname"></input>
+        <input type='text' placeholder="Hub Key"></input>
+        <input type='password' placeholder="Password"></input>
+        <input type='password' placeholder="Confirm Password"></input>
+        <!-- <but-ton id='cancel' class='cancel'>Cancel</but-ton> -->
+        <but-ton id='createAccept' class='accept'>Create account</but-ton><br /><br />
+        <div class='dividr'></div><br />
+        <div id='signin'>Already have an account? Login</div>
+      </muse-div>
+    </div>
+  </muse-card>
+</div>

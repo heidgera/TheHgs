@@ -13,7 +13,19 @@ html, body {
 	text-align: center;
   /* cursor: none; */
   z-index: -100;
-  overflow: hidden;
+  /* overflow: hidden; */
+	overflow-x: hidden;
+}
+
+ref-div {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	pointer-events: none;
 }
 
 body {
@@ -48,6 +60,7 @@ body.loggedIn .loggedOut {
 	font-size: 1.5em;
 	font-family: sans-serif;
 	font-weight: lighter;
+	width: 100vw;
   --background-color: #fafafa;
   --font-color: #555;
 	--shadow-style: 0;
@@ -78,4 +91,25 @@ body.loggedIn .loggedOut {
   height: 10px;
   border-radius: 5px;
   background-color: #f00;
+}
+
+#blurDiv {
+  background-color: rgba(0,0,0,0);
+	filter: blur(0px);
+	position: fixed;
+	z-index: 0;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+}
+
+#blurDiv.blur_running {
+  display: block;
+  transition: all .5s ease;
+}
+
+#blurDiv[blur] {
+	background-color: rgba(0,0,0,.5);
+	filter: blur(0px);
 }

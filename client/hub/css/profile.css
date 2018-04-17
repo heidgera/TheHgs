@@ -1,0 +1,31 @@
+#profileCard {
+  width: 90vw;
+  left: -100vw;
+  top: 8vh;
+  height: 89vh;
+}
+
+#profileCard[show] {
+	left: 5vw;
+	/* transform: scale(1); */
+}
+
+#profileMenu #edit {
+  font-size: .5em;
+  padding: .5em;
+}
+
+#profileCard .cardContent img {
+  width: 25vw;
+  height: 25vw;
+  float: left;
+  margin-right: 1em;
+  border-radius: 1em;
+}
+
+#profileCard .cardContent textarea {
+  width: calc(100% - 25vw - 4em);
+  height: 10vw;
+  float: left;
+  margin-right: 1em;
+}

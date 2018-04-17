@@ -1,0 +1,90 @@
+#createCard {
+	position: absolute;
+	top: 9vh;
+  width: 90vw;
+	height: 89vh;
+  left: 110vw;
+	pointer-events: all;
+}
+
+#createCard[show] {
+	top: 9vh;
+	left: 5vw;
+	/* transform: scale(1); */
+}
+
+#createMenu #edit {
+  font-size: .5em;
+  padding: .5em;
+}
+
+#createCard .cardContent {
+  width: 100%;
+  margin: 1em;
+  font-size: .5em;
+  box-sizing: border-box;
+	/* text-align: center; */
+}
+
+#createCard input + span {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+#createCard .cardContent textarea {
+  width: calc(100% - 2em);
+  height: 10vw;
+  float: left;
+  margin-right: 1em;
+}
+
+#createCard .imageHolder {
+	display: inline-block;
+	position: relative;
+	width:25vw;
+	height: 25vw;
+	border-radius: 1em;
+	border: solid 1px rgba(0,0,0, .2);
+	text-align: center;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+#createCard .imgDisplay{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left:0;
+	right: 0;
+	margin: auto;
+	width:100%;
+	height: auto;
+}
+
+#createCard .imgDisplay:after {
+  content: attr(alt);
+
+  font-size: 1em;
+	font-family: default;
+	line-height: 25vw;
+  color: #222;
+
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #aaa;
+}
+
+#createCard .buttons {
+	position: absolute;
+	bottom: 1em;
+	right: 1em;
+}
+
+#createCard .titleInput {
+	width: calc(100% - 2em);
+}

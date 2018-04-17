@@ -1,0 +1,24 @@
+<div refContent>
+  <muse-card id='createCard'>
+    <muse-menu id='createMenu' title='Make a new post'>
+      <span class='close' slot='left'>&#10005;</span>
+    </muse-menu>
+    <div class='cardContent'>
+      <div>
+        <input class='titleInput' type='text' placeholder="Title"></input><br /><br />
+        <input class='linkInput' type='text' placeholder="Image link"></input><span>or</span>
+        <input id='fileUp' class='fileInput' name='fileUp' type='file' display='none'></input>
+        <label for='fileUp'>Upload an image</label><br /><br />
+        <div class='imageHolder'><img class='imgDisplay' alt=''></img></div><br /><br />
+        <div><textarea id='text' type='text' placeholder="Enter post text here"></textarea></div><br /><br/>
+        <p><input type="checkbox" id='public'></input><span>Make Public</span></p>
+        <br />
+      </div>
+      <div class='buttons'>
+        <but-ton id='cancel'>Cancel</but-ton>
+        <but-ton id='post'>Post</but-ton>
+
+      </div>
+    </div>
+  </muse-card>
+</div>

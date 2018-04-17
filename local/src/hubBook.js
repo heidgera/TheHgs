@@ -24,6 +24,21 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
   //   next();
   // });
 
+  router.post('/hub/:hub', (req, res)=> {
+    var hub = hubs.find('name', req.params.hub);
+    if (hub) {
+      console.log('asking to be connected to ' + hub.name);
+      wss.send(hub.id, 'cnxn:request', {
+        user: req.session.user,
+        fromId: req.session.id,
+        toId: hub.id,
+      });
+      res.json({ ['cnxn:request']: true });
+    } else {
+      res.json({ ['cnxn:request']: false });
+    }
+  });
+
   router.get('/hub/:hub', (req, res)=> {
     var hub = hubs.find('name', req.params.hub);
     req.session.remoteId = hub && hub.id;

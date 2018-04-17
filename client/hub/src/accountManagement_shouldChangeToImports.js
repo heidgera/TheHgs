@@ -1,5 +1,5 @@
 var obtains = [
-  `${__dirname}/profile.js`,
+  './profile.js',
 ];
 
 obtain(obtains, (profile)=> {
@@ -84,7 +84,7 @@ obtain(obtains, (profile)=> {
           pass: bin.LogIn.pass.field.value,
         }).then((res)=> {
           console.log('here');
-          exports.handleLoginData(JSON.parse(res)['user:account']);
+          exports.handleUserData(JSON.parse(res)['user:account']);
         });
 
         bin.card.opened = false;
@@ -129,8 +129,12 @@ obtain(obtains, (profile)=> {
       µ('#loginOpts').opened = !appData.user;
     };*/
     //createElements();
-    //setActions();
-    profile.init();
+
+    µ('#loginCont2').onReady(()=> {
+
+    });
+    setActions();
+
   };
 
   var onLogout = ()=> {
@@ -142,70 +146,59 @@ obtain(obtains, (profile)=> {
   };
 
   var createAccountDrop = (data)=> {
+    µ('#account').textContent = '';
+    bin.acct = {};
+    bin.acct.icon = µ('+img', µ('#account'));
+    bin.acct.icon.src = data.icon;
 
+    bin.acct.card = µ('+muse-card', µ('#account'));
+
+    bin.acct.card.makeTransitionState('show');
+
+    bin.acct.card.show = false;
+    bin.acct.card.id = 'acctCard';
+
+    var rect = bin.acct.icon.getBoundingClientRect();
+    bin.acct.card.style.removeProperty('--icon-pos-x');
+    bin.acct.card.style.setProperty('--icon-pos-x', (window.innerWidth - rect.right) + 'px');
+    bin.acct.card.style.removeProperty('--icon-pos-y');
+    bin.acct.card.style.setProperty('--icon-pos-y', rect.bottom + 'px');
+
+    bin.acct.card.onClickOutsideCard = (e)=> {
+      if (e.target != bin.acct.icon) {
+        bin.acct.card.show = false;
+      }
+
+    };
+
+    var content = µ('+div', bin.acct.card);
+    content.className = 'cardContent';
+
+    bin.acct.profile = µ('+div', content);
+    bin.acct.profile.textContent = 'View Profile';
+
+    µ('+div', content).className = 'dividr';
+
+    bin.acct.logout = µ('+div', content);
+    bin.acct.logout.textContent = 'Logout';
+
+    bin.acct.logout.onclick = ()=> {
+      post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/logout`, {})
+      .then((res)=> {
+        reset();
+        bin.card.opened = true;
+        onLogout();
+        exports.handleUserData(JSON.parse(res)['user:account']);
+      });
+    };
   };
 
   var onLogin = (user)=> {
-    //createAccountDrop(user);
-    µ('#account').onready = ()=> {
-      bin.acct = {};
+    createAccountDrop(user);
 
-      bin.acct.icon = µ('.smallUser', µ('#account'))[0];
-      bin.acct.card = µ('muse-card', µ('#account'))[0];
-      bin.acct.logout = µ('#logout', µ('#account'));
-      bin.acct.profile = µ('#profile', µ('#account'));
-      bin.acct.post = µ('#add', µ('#account'));
-
-      bin.acct.icon.src = user.icon;
-
-      bin.acct.icon.onclick = ()=> {
+    bin.acct.icon.onclick = ()=> {
         bin.acct.card.show = true;
       };
-
-      bin.acct.card.makeTransitionState('show');
-
-      var rect = bin.acct.icon.getBoundingClientRect();
-      bin.acct.card.style.removeProperty('--icon-pos-x');
-      bin.acct.card.style.setProperty('--icon-pos-x', (window.innerWidth - rect.right) + 'px');
-      bin.acct.card.style.removeProperty('--icon-pos-y');
-      bin.acct.card.style.setProperty('--icon-pos-y', rect.bottom + 'px');
-
-      bin.acct.card.onClickOutsideCard = (e)=> {
-        if (e.target != bin.acct.icon) bin.acct.card.show = false;
-      };
-
-      bin.acct.post.onclick = ()=> {
-        if (µ('#createCard')) µ('#createCard').show = true;
-        bin.acct.card.show = false;
-        µ('#blurDiv').blur = true;
-      };
-
-      bin.acct.profile.onclick = ()=> {
-        if (µ('#profileCard')) µ('#profileCard').show = true;
-        bin.acct.card.show = false;
-        µ('#blurDiv').blur = true;
-      };
-
-      bin.acct.logout.onclick = ()=> {
-        post(`http${muse.useSSL ? 's' : ''}://${window.location.hostname}/logout`, {})
-        .then((res)=> {
-          reset();
-          bin.card.opened = true;
-          onLogout();
-          exports.handleLoginData(JSON.parse(res)['user:account']);
-        });
-      };
-    };
-
-    µ('#postCont').onready = ()=> {
-      µ('#createCard').makeTransitionState('show');
-    };
-
-    µ('#profileCont').onready = ()=> {
-      µ('#icon', µ('#profileCont')).src = user.icon;
-      µ('#profileMenu', µ('#profileCont')).title = user.longName;
-      µ('#dob', µ('#profileCont')).value = new Date(user.dob).toISOString().split('T')[0];
-    };
   };
 
   exports.onLogout = ()=> {
@@ -220,7 +213,7 @@ obtain(obtains, (profile)=> {
     onLogin(data);
   };
 
-  exports.handleLoginData = (data)=> {
+  exports.handleUserData = (data)=> {
     if (data && data.error) {
       if (data.error.type == 'NO_HUB') {
         bin.LogIn.hub.output.textContent = 'No such hub.';

@@ -5,15 +5,23 @@
     <title>Template</title>
     <script src="../common/src/muse/main.js" main="./src/app.js"></script>
   	<link rel="stylesheet" href="css/style.css"></link>
+  	<link rel="stylesheet" href="css/cardStyles.css"></link>
   	<link rel="stylesheet" href="css/account.css"></link>
+  	<link rel="stylesheet" href="css/profile.css"></link>
+  	<link rel="stylesheet" href="css/posts.css"></link>
   </head>
   <body class='loggedOut'>
     <muse-menu id='mainMenu' title='Conduit'>
       <span id='close' class='svgIcon' slot='left'></span>
-      <span id='account'>Sign In</span>
+      <ref-div id='account' src='./interface/account/dropdown.html'></ref-div>
     </muse-menu>
     <div class='contentDiv'>
-      <div id='loginCont' class="fullCenter"></div>
+      <div id='posts'></div>
+      <muse-div id='blurDiv'></muse-div>
+      <!-- <div id='loginCont' class="fullCenter"></div> -->
+      <ref-div id='loginCont' src='./interface/account/login.html'></ref-div>
+      <ref-div id='profileCont' src='./interface/profile'></ref-div>
+      <ref-div id='postCont' src='./interface/posts/create.html'></ref-div>
       <!-- <div id='postCont' class="fullCenter"></div> -->
     </div>
   </body>

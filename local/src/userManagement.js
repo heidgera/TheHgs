@@ -28,8 +28,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, hubs, path, request)
           id: deets.verified && deets.id,
           trusted: deets.verified,
           name: req.body.user,
-          hub: hub.name,
-          hubId: hub.uuid,
+          hub: {
+            name: hub.name,
+            id: hub.uuid,
+            cnxnId: hub.id,
+          },
         };
         //res.cookie('name', 'value', { signed: true });
         exports.onLogin(req);
