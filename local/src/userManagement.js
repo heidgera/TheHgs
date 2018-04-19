@@ -34,9 +34,9 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, hubs, path, request)
             cnxnId: hub.id,
           },
         };
+        wss.orderedClients[req.session.id].user = req.session.user;
         //res.cookie('name', 'value', { signed: true });
         exports.onLogin(req);
-        console.log(req.session.user);
         res.json({ ['user:account']: req.session.user });
 
       });
@@ -46,7 +46,14 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, hubs, path, request)
     }
   });
 
+  wss.addListener('user:confirm', (cnxnId, data, src)=> {
+    var ws = wss.orderedClients[cnxnId];
+    console.log(ws.user);
+    wss.send(src.id, 'user:confirm', ws.user);
+  });
+
   router.post('/logout', (req, res)=> {
+    if (wss.orderedClients[req.session.id]) wss.orderedClients[req.session.id].user = null;
     req.session.user = null;
     exports.onLogout(req);
     res.json({ ['user:account']: req.session.user });
@@ -65,7 +72,8 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, hubs, path, request)
           trusted: deets.verified,
           name: req.body.user,
           hub: {
-            id: hub.id,
+            cnxnId: hub.id,
+            id: hub.uuid,
             name: hub.name,
           },
         };

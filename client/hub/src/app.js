@@ -2,30 +2,34 @@
 
 window.appData = {};
 
-//muse.useSSL = true;
+muse.useSSL = (window.location.protocol == 'https:');
 var obtains = [
   //`./src/accountManagement.js`,
-  `./src/posts.js`,
+  `./src/posts/index.js`,
+  `./src/profile.js`,
   `./src/account/index.js`,
+  './src/hubs.js',
   'µ/dataChannel.js',
   'µ/socket.js',
   'µ/components/index.js',
 ];
 
-obtain(obtains, (posts, account, peers, socket, comps)=> {
+obtain(obtains, (posts, profile, account, hubs, peers, socket, comps)=> {
+  var ws = socket.connect(window.location.hostname);
+  peers.init(ws);
 
   exports.app = {};
 
   exports.app.start = ()=> {
-    var ws = socket.connect(window.location.hostname);
-    peers.init(ws);
 
     µ('#blurDiv').makeTransitionState('blur');
     µ('#blurDiv').blur = false;
 
     //user.init();
     posts.init();
+    profile.init();
     account.init();
+
     //login.init();
     console.log('starting...');
 

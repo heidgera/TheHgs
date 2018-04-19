@@ -41,11 +41,11 @@ body.loggedOut .loggedIn, body.loggedOut .loggedOut {
 }
 
 body.loggedIn .loggedIn {
-  opacity: 1;
+  display: inline-block;
 }
 
 body.loggedOut .loggedIn {
-  opacity: 0;
+  display: none;
 }
 
 body.loggedOut .loggedOut {

@@ -13,8 +13,8 @@ obtain(obtains, ({ manager })=> {
       };
     });
 
-    bin.Login.main.makeTransitionState('show');
-    bin.SignUp.main.makeTransitionState('show');
+    bin.Login.main.makeTransitionState('show', 'hide');
+    bin.SignUp.main.makeTransitionState('show', 'hide');
 
     bin.Login.accept.onclick = ()=> {
       console.log('login click');
@@ -35,11 +35,12 @@ obtain(obtains, ({ manager })=> {
 
     manager.onlogin = (user)=> {
       console.log('logged in');
-      bin.card.opened = false;
+      bin.card.show = false;
     };
 
     manager.onlogout = ()=> {
-      bin.card.opened = true;
+      console.log('here');
+      //bin.card.show = true;
     };
 
     if (!bin.card.setup) bin.card.makeTransitionState('show', 'hide');
@@ -61,7 +62,7 @@ obtain(obtains, ({ manager })=> {
 
     bin.SignUp.main.onHide = ()=> {
       bin.Login.main.show = true;
-      bin.menu.title = 'Sign in';
+      bin.menu.title = 'Sign into your account';
     };
 
     bin.Login.switch.onclick = ()=> {
@@ -88,7 +89,7 @@ obtain(obtains, ({ manager })=> {
 
   exports.init = ()=> {
     µ('#loginCont').onready = ()=> {
-      console.log('login ready');
+      console.log('Login box ready');
       var div = µ('#loginCont');
       bin.card = µ('muse-card', div)[0];
       bin.menu = µ('muse-menu', div)[0];

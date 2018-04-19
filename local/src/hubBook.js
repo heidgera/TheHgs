@@ -28,12 +28,31 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     var hub = hubs.find('name', req.params.hub);
     if (hub) {
       console.log('asking to be connected to ' + hub.name);
+      req.session.query = { type: 'default' };
       wss.send(hub.id, 'cnxn:request', {
         user: req.session.user,
+        query: req.session.query,
         fromId: req.session.id,
         toId: hub.id,
       });
       res.json({ ['cnxn:request']: true });
+    } else {
+      res.json({ ['cnxn:request']: false });
+    }
+  });
+
+  router.post('/hub/byId/:hub', (req, res)=> {
+    var hub = hubs.find('uuid', req.params.hub);
+    if (hub) {
+      console.log('asking to be connected to ' + hub.name);
+      req.session.query = { type: 'default' };
+      wss.send(hub.id, 'cnxn:request', {
+        user: req.session.user,
+        query: req.session.query,
+        fromId: req.session.id,
+        toId: hub.id,
+      });
+      res.json({ ['cnxn:request']: { hubId: hub.id } });
     } else {
       res.json({ ['cnxn:request']: false });
     }
@@ -44,15 +63,9 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     req.session.remoteId = hub && hub.id;
     req.session.remoteName = req.params.hub;
     req.session.remoteUUID = hub && hub.uuid;
-    //res.render('hub.pug', { title: req.params.hub, hubName:  hub && hub.id });
-    if (req.session.user) res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
-    else {
-      if (hub) {
-        req.session.redirect = hub.name;
-      }
+    req.session.query = { type: 'default' };
 
-      res.redirect('/hub');
-    }
+    res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
   });
 
   // router.get('/direct/:hub/:route(\\S+)', (req, res)=> {
@@ -65,6 +78,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     if (req.session.remoteId && !!wss.orderedClients[req.session.remoteId]) {
       wss.send(req.session.remoteId, 'cnxn:request', {
         user: req.session.user,
+        query: req.session.query,
         fromId: req.session.id,
         toId: req.session.remoteId,
       });
@@ -95,12 +109,17 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     requestConnection(req);
   };
 
+  var updateHubID = (uuid)=> {
+    var hub = hubs.find('uuid', uuid);
+    return hub && hub.id;
+  };
+
   wss.onClientConnect = (ws, req)=> {
     if (req) {
       console.log('client connected');
       var id = req.session.id;
       wss.orderedClients[req.session.id] = ws;
-      //console.log(id);
+      console.log(id);
       ws.id = req.session.id;
       req.session.ws = ws;
 
@@ -115,8 +134,9 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
 
       if (user && user.trusted) {
         wss.send(req.session.id, 'user:account', req.session.user);
-        requestConnection(req);
       } else wss.send(req.session.id, 'user:account', false);
+
+      requestConnection(req);
     }
 
   };
