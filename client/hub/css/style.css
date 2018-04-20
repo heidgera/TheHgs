@@ -28,6 +28,10 @@ ref-div {
 	pointer-events: none;
 }
 
+@media screen and (orientation:portrait) {
+   /* Portrait styles here */
+}
+
 body {
   background-color: rgba(255,255,255,.75);
 	/* background-image: url('https://res.cloudinary.com/visbook/image/upload/f_auto,q_auto,e_vibrance,dpr_auto,g_auto:face,w_1920,c_lfill/878//Portals/eliassen/HovedsideSlide0.jpg'); */
@@ -57,6 +61,7 @@ body.loggedIn .loggedOut {
 }
 
 #mainMenu {
+	position: fixed;
 	font-size: 1.5em;
 	font-family: sans-serif;
 	font-weight: lighter;
@@ -94,10 +99,11 @@ body.loggedIn .loggedOut {
 }
 
 #blurDiv {
+	pointer-events: none;
   background-color: rgba(0,0,0,0);
 	filter: blur(0px);
 	position: fixed;
-	z-index: 0;
+	z-index: 10;
 	width: 100vw;
 	height: 100vh;
 	top: 0;
@@ -113,3 +119,9 @@ body.loggedIn .loggedOut {
 	background-color: rgba(0,0,0,.5);
 	filter: blur(0px);
 }
+
+.contentDiv {
+	overflow-y: scroll;
+}
+
+@import "../css/posts.css";

@@ -14,7 +14,7 @@ obtain(obtains, (peers, socket, { Emitter })=> {
 
         var _this = this;
 
-        this.ws = socket.connect(window.location.hostname);
+        this.ws = socket.get(window.location.hostname);
         peers.init(this.ws);
 
       }

@@ -1,3 +1,7 @@
+#postCont {
+	z-index: 100;
+}
+
 #createCard {
 	position: absolute;
 	top: 9vh;
@@ -5,6 +9,8 @@
 	height: 89vh;
   left: 110vw;
 	pointer-events: all;
+	border: 2px solid #fff;
+	box-sizing: content-box;
 }
 
 #createCard[show] {
@@ -90,24 +96,60 @@
 }
 
 #posts {
-	overflow-y: scroll;
 	position: absolute;
 	top: 6vh;
 	left: 0;
 	width: 100vw;
-	height: 94vh;
 	text-align: center;
+	z-index: 1;
 }
 
 #posts muse-card {
+	pointer-events: all;
 	position: relative;
+	top: 100vh;
+	opacity: 0;
 	margin: 2vh;
-	z-index: -1;
-	max-width: 50vw;
+	/* max-width: 50vw; */
 	text-align: center;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#posts muse-card.slide_running {
+	transition: all .5s ease;
+}
+
+#posts muse-card[slide] {
+	opacity: 1;
+	top: 0;
+}
+
+#posts muse-card .cardContent{
+	margin:0;
 }
 
 #posts muse-card img{
-	max-width: 100%;
-	max-height: 33vh;
+	max-width: 90vmin;
+	height: 33vmax;
+	width: auto;
+}
+
+#posts muse-card .postText{
+	padding: 1em;
+}
+
+#posts muse-card .postInfo{
+	font-size: .5em;
+	padding: 1em;
+	background-color: #fafafa;
+	border: 1px solid #eee;
+}
+
+#posts muse-card .postDate{
+	float:left;
+}
+
+#posts muse-card .postAuthor{
+	float:right;
 }

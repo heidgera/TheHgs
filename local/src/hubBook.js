@@ -28,7 +28,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     var hub = hubs.find('name', req.params.hub);
     if (hub) {
       console.log('asking to be connected to ' + hub.name);
-      req.session.query = { type: 'default' };
+      req.session.query = req.body.query;
       wss.send(hub.id, 'cnxn:request', {
         user: req.session.user,
         query: req.session.query,
@@ -45,7 +45,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     var hub = hubs.find('uuid', req.params.hub);
     if (hub) {
       console.log('asking to be connected to ' + hub.name);
-      req.session.query = { type: 'default' };
+      req.session.query = req.body.query;
       wss.send(hub.id, 'cnxn:request', {
         user: req.session.user,
         query: req.session.query,
@@ -82,6 +82,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
         fromId: req.session.id,
         toId: req.session.remoteId,
       });
+      req.session.query = null;
       //wss.send(req.session.id, 'user:account', req.session.user);
     } else if (req.session.remoteName) {
       wss.send(req.session.id, { error: 'fourohfour' });
@@ -131,6 +132,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       }
 
       var user = req.session.user;
+      console.log(user);
 
       if (user && user.trusted) {
         wss.send(req.session.id, 'user:account', req.session.user);

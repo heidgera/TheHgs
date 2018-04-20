@@ -33,6 +33,7 @@ muse-div.fadeDiv[show] {
   pointer-events: none;
   background-color: rgba(0,0,0,0);
   text-align: center;
+  z-index: 100;
 }
 
 #loginCard {
@@ -47,6 +48,7 @@ muse-div.fadeDiv[show] {
 	/* transform: scale(0);
 	transform-origin: right top; */
   text-align: center;
+  z-index: 100;
 }
 
 #loginCard.show_running {
@@ -126,6 +128,10 @@ muse-div.fadeDiv[show] {
   height: 2em;
   width: 2em;
   background-color: #7af;
+}
+
+#signin::before {
+  content: "Sign in";
 }
 
 #acctCard {

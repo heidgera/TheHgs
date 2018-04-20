@@ -1,0 +1,8 @@
+body {
+  background-color: #999;
+}
+
+#posts muse-card img {
+  width: 80vw;
+  height: auto;
+}

@@ -7,22 +7,41 @@ var obtains = [
 ];
 
 obtain(obtains, (peers, socket, { Emitter }, { manager })=> {
+  var slides = 0;
   exports.newPostCard = (data)=> {
     console.log(data);
+
     var card = µ('+muse-card', µ('#posts'));
     card.makeTransitionState('slide');
+    card.id = data.id;
 
-    if (0 && data.title) {
+    if (data.fileSize) {
+      card.imgSrc = '';
+      card.fileSize = data.fileSize;
+    }
+
+    card.slide = false;
+
+    if (data.title) {
       card.menu = µ('+muse-menu', card);
       card.menu.title = data.title;
+
+      // card.heart = µ('+span', card.menu);
+      // card.heart.textContent = '♡';
+      //
+      // card.heart.onclick = ()=> {
+      //   console.log('here');
+      //   card.heart.textContent = '♥';
+      //   card.heart.style.color = '#700';
+      // };
     }
 
     var content = µ('+div', card);
     content.className = 'cardContent';
 
-    if (data.img) {
+    if (data.img || data.fileSize) {
       card.image = µ('+img', content);
-      card.image.src = data.img;
+      if (data.img) card.image.src = data.img;
     }
 
     if (data.text) {
@@ -32,10 +51,21 @@ obtain(obtains, (peers, socket, { Emitter }, { manager })=> {
     }
 
     card.postInfo = µ('+div', content);
+    card.postInfo.className = 'postInfo';
     card.time = µ('+span', card.postInfo);
+    card.time.className = 'postDate';
     card.time.textContent = new Date(data.timestamp).toLocaleString();
     card.user = µ('+span', card.postInfo);
+    card.user.className = 'postAuthor';
     card.user.textContent = data.user.name;
+
+    slides++;
+    setTimeout(()=> {
+      card.slide = true;
+      slides--;
+    }, 100 * slides);
+
+    return card;
   };
 
   exports.connect = (peer)=> {

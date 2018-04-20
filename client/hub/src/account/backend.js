@@ -15,10 +15,11 @@ obtain(obtains, (peers, socket, { Emitter }, hubs)=> {
 
         var _this = this;
 
-        this.ws = socket.connect(window.location.hostname);
+        this.ws = socket.get(window.location.hostname);
         peers.init(this.ws);
 
         this.ws.on('user:account', (data)=> {
+          console.log('got login');
           _this.handleLogin(data);
         });
       }

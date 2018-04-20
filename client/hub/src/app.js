@@ -15,12 +15,14 @@ var obtains = [
 ];
 
 obtain(obtains, (posts, profile, account, hubs, peers, socket, comps)=> {
-  var ws = socket.connect(window.location.hostname);
+
+  var ws = socket.get(window.location.hostname);
   peers.init(ws);
 
   exports.app = {};
 
   exports.app.start = ()=> {
+    ws.connect();
 
     µ('#blurDiv').makeTransitionState('blur');
     µ('#blurDiv').blur = false;

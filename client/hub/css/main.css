@@ -1,0 +1,7 @@
+@import "style.css";
+@import "posts.css";
+@import "account.css";
+@import "profile.css";
+@import "cardStyles.css";
+
+@import "portrait/main.css" screen and (orientation:portrait);
