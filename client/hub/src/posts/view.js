@@ -39,7 +39,7 @@ obtain(obtains, (peers, socket, { Emitter }, { manager })=> {
     var content = µ('+div', card);
     content.className = 'cardContent';
 
-    if (data.img.length || data.fileSize) {
+    if ((data.img && data.img.length) || data.fileSize) {
       card.image = µ('+img', content);
       if (data.img) card.image.src = data.img;
     }
