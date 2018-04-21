@@ -46,6 +46,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     if (hub) {
       console.log('asking to be connected to ' + hub.name);
       req.session.query = req.body.query;
+      req.session.redirect = hub.name;
       wss.send(hub.id, 'cnxn:request', {
         user: req.session.user,
         query: req.session.query,
@@ -127,6 +128,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       console.log(id);
       ws.id = req.session.id;
       req.session.ws = ws;
+      req.session.redirect = 'test';
 
       //wss.send(ws.id, { setId: id });
 
