@@ -19,7 +19,7 @@ obtain(obtains, (manager, { manager: postMan })=> {
       var text = µ('#text', µ('#postCont'));
       var pub = µ('#public', µ('#postCont'));
 
-      img.src = null;
+      img.src = '';
 
       card.makeTransitionState('show', 'hide');
 
