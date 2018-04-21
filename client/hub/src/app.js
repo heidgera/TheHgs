@@ -44,7 +44,7 @@ obtain(obtains, (posts, profile, account, hubs, peers, socket, comps)=> {
       history.pushState(appData.user, data.title, data.path);
     });
 
-    ws.addListener('error', (msg)=> {
+    ws.addListener('route:error', (msg)=> {
       console.log(msg);
     });
 
