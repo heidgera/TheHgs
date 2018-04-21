@@ -59,8 +59,8 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
   });
 
   router.get('/hub/:hub', (req, res)=> {
-    console.log('Received GET request for ' + req.params.hub);
     if (req.params.hub) {
+      console.log('Received GET request for ' + req.params.hub);
       var hub = hubs.find('name', req.params.hub);
       if (hub) console.log('found ' + req.params.hub);
       req.session.remoteId = hub && hub.id;
