@@ -31,8 +31,29 @@ obtain(obtains, (manager, { manager: postMan })=> {
         if (fInp.files && fInp.files[0]) {
           var FR = new FileReader();
 
+          var img = µ('.imgDisplay', µ('#postCont'))[0];
+
+          img.onload = function () {
+
+            var oc = document.createElement('canvas'),
+                octx = oc.getContext('2d');
+
+            octx.imageSmoothingQuality = 'medium';
+            octx.imageSmoothingEnabled = true;
+
+            oc.width = 1000;//img.width * 0.5; 1000/wid = fin/hgt
+            oc.height = 1000 * img.height / img.width;
+            octx.drawImage(img, 0, 0, oc.width, oc.height);
+
+            img.src = oc.toDataURL();
+
+            img.onload = ()=> {
+              console.log('resized');
+            };
+          };
+
           FR.addEventListener('load', function (e) {
-            µ('.imgDisplay', µ('#postCont'))[0].src = e.target.result;
+            img.src = e.target.result;
           });
 
           FR.readAsDataURL(fInp.files[0]);
