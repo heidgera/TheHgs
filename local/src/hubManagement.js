@@ -51,6 +51,8 @@ obtain(obtains, (saltHash, uuidv4, fs)=> {
     var byName = exports.find('name', info.name);
     var byId = exports.find('uuid', info.id);
 
+    console.log('requesting name: ' + info.name);
+
     if (!byName && !byId) return pubInfo(add(info));
     else if (byName == byId && saltHash.check(info.key, byId.salt, byId.hash)) {
       byId.ws = info.ws;
