@@ -59,11 +59,11 @@ obtain(obtains, (peers, socket, { Emitter }, { manager })=> {
     card.user.className = 'postAuthor';
     card.user.textContent = data.user.name;
 
-    slides++;
-    setTimeout(()=> {
-      card.slide = true;
-      slides--;
-    }, 100 * slides);
+    if (card.image) {
+      card.image.onload = ()=> {
+        card.slide = true;
+      };
+    } else setTimeout(()=> {card.slide = true;}, 100);
 
     return card;
   };
