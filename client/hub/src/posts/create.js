@@ -19,12 +19,15 @@ obtain(obtains, (manager, { manager: postMan })=> {
       var text = µ('#text', µ('#postCont'));
       var pub = µ('#public', µ('#postCont'));
 
+      var imgSrc = '';
+
       img.src = '';
 
       card.makeTransitionState('show', 'hide');
 
       lInp.onblur = ()=> {
         img.src = lInp.value;
+        imgSrc = lInp.value;
       };
 
       fInp.addEventListener('change', ()=> {
@@ -46,6 +49,7 @@ obtain(obtains, (manager, { manager: postMan })=> {
             octx.drawImage(img, 0, 0, oc.width, oc.height);
 
             img.src = oc.toDataURL();
+            imgSrc = img.src;
 
             img.onload = ()=> {
               console.log('resized');
@@ -77,7 +81,7 @@ obtain(obtains, (manager, { manager: postMan })=> {
       post.onclick = ()=> {
         postMan.create({
           title: title.value,
-          img: img.src,
+          img: imgSrc,
           text: text.value,
           tags: ['default'],
           public: pub.checked,
