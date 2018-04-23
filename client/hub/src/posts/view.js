@@ -62,8 +62,12 @@ obtain(obtains, (peers, socket, { Emitter }, { manager })=> {
     if (card.image) {
       card.image.onload = ()=> {
         card.slide = true;
+        µ('#loading').spin = false;
       };
-    } else setTimeout(()=> {card.slide = true;}, 100);
+    } else setTimeout(()=> {
+      card.slide = true;
+      µ('#loading').spin = false;
+    }, 100);
 
     return card;
   };

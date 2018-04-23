@@ -27,6 +27,8 @@ obtain(obtains, (posts, profile, account, hubs, peers, socket, comps)=> {
     µ('#blurDiv').makeTransitionState('blur');
     µ('#blurDiv').blur = false;
 
+    µ('#loading').makeTransitionState('spin');
+
     //user.init();
     posts.init();
     profile.init();
@@ -46,6 +48,13 @@ obtain(obtains, (posts, profile, account, hubs, peers, socket, comps)=> {
 
     ws.addListener('route:error', (msg)=> {
       console.log(msg);
+      µ('#loading').spin = false;
+      µ('#notify').textContent = '🔍\nHub not found';
+    });
+
+    ws.addListener('cnxn:query', (data)=> {
+      console.log('requesting posts from ' + data.details.hub.name);
+      µ('#loading').spin = true;
     });
 
     document.onkeypress = (e)=> {

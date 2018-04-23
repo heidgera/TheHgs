@@ -61,13 +61,17 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
 
   router.get('/hub/:hub', (req, res)=> {
     if (req.params.hub != 'null') {
-      console.log('Received GET request for ' + req.params.hub);
       var hub = hubs.find('name', req.params.hub);
       if (hub) console.log('found ' + req.params.hub);
       req.session.remoteId = hub && hub.id;
       req.session.remoteName = req.params.hub;
       req.session.remoteUUID = hub && hub.uuid;
-      req.session.query = { type: 'default' };
+      req.session.query = { type: 'hub', details: {
+        hub: {
+          name: req.params.hub,
+          id: hub && hub.uuid,
+        },
+      }, };
     }
 
     res.sendFile(path.join(__dirname, '../../client/hub', 'index.html'));
@@ -87,10 +91,11 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
         fromId: req.session.id,
         toId: req.session.remoteId,
       });
+      wss.send(req.session.id, 'cnxn:query', req.session.query);
       req.session.query = null;
-      //wss.send(req.session.id, 'user:account', req.session.user);
+
     } else if (req.session.remoteName) {
-      wss.send(req.session.id, { error: 'fourohfour' });
+      wss.send(req.session.id, 'route:error', 'NO_CLIENT');
     } else {
       console.log('did not request connection');
     }
@@ -128,7 +133,6 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       console.log(id);
       ws.id = req.session.id;
       req.session.ws = ws;
-      req.session.redirect = 'test';
 
       //wss.send(ws.id, { setId: id });
 
@@ -162,7 +166,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
     if (wss.orderedClients[data.to]) {
       wss.send(data.to, 'cnxn:candidate', data);
     } else {
-      wss.send(ws.id, { error: 'No such client' });
+      wss.send(ws.id, 'cnxn:error', 'NO_CLIENT');
     }
   });
 
@@ -185,7 +189,7 @@ obtain(obtains, ({ fileServer, router }, { wss }, saltHash, users, hubs, path, r
       console.log(data.to);
       wss.send(data.to, 'cnxn:description', data);
     } else {
-      wss.send(ws.id, { error: 'No such client' });
+      wss.send(ws.id, 'cnxn:error', 'NO_CLIENT');
     }
   });
 });

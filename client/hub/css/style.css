@@ -124,4 +124,89 @@ body.loggedIn .loggedOut {
 	overflow-y: scroll;
 }
 
-@import "../css/posts.css";
+.fullCenter {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+  pointer-events: none;
+  background-color: rgba(0,0,0,0);
+	text-align: center;
+	--end-rotate: 360deg;
+	--start-rotate: 0deg;
+}
+
+#notifications > * {
+	font-size: 2em;
+	color: #777;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	margin:auto;
+	white-space: pre;
+}
+
+#notify {
+
+	height: 2em;
+	width: 75vw;
+}
+
+@keyframes spin {
+	0% {
+		transform:rotate(var(--start-rotate));
+	}
+	100% {
+		transform:rotate(var(--end-rotate));
+	}
+}
+
+@keyframes spinccw {
+	0% {
+		transform:rotate(0deg);
+	}
+	100% {
+		transform:rotate(-360deg);
+	}
+}
+
+#loading {
+	width:75vw;
+	height: 75vw !important;
+	border: .5em dashed #777;
+	border-radius: 100%;
+	opacity: 0;
+	transition: opacity .5s ease;
+}
+
+#loading.spin_running {
+	animation:spin 4s linear infinite;
+}
+
+#loading[spin] {
+	opacity: 1;
+	animation:spin 4s linear infinite;
+}
+
+#loading[spin] div, #loading.spin_running div{
+	--end-rotate: -360deg;
+	--start-rotate: 0deg;
+	animation:spin 4s linear infinite;
+}
+
+#loading div {
+	position: absolute;
+	font-size: 2em;
+
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin:auto;
+	line-height: 75vw;
+	text-align: center;
+}
